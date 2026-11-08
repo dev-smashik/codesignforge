@@ -23,7 +23,12 @@ const httpsOrHttpUrl = url.refine(
 const databaseEnvSchema = z.object({
   DATABASE_URL: trimmedString,
   DIRECT_URL: trimmedString.optional(),
-  NEXT_PUBLIC_APP_URL: httpsOrHttpUrl.default("http://localhost:3000"),
+  // Empty/missing values (common when a dashboard variable is cleared)
+  // fall back to the default instead of failing URL validation.
+  NEXT_PUBLIC_APP_URL: z.preprocess(
+    (v) => (v == null || v === "" ? "http://localhost:3000" : v),
+    httpsOrHttpUrl,
+  ),
 });
 
 /** Variables the rate limiter depends on (Phase 4+). */
