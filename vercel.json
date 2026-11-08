@@ -1,8 +1,11 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/process-outbox",
-      "schedule": "* * * * *"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "functions": {
+    "app/api/cron/process-outbox/route.ts": {
+      "maxDuration": 60
     }
-  ]
+  }
 }
