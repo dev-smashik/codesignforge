@@ -22,10 +22,21 @@ export function WaitlistForm() {
   const statusId = useId();
 
   const submitting = state.status === "submitting";
+  const succeeded = state.status === "success";
+
+  // Live validation — button lights up with the accent colour only when
+  // the typed address looks like a real email.
+  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  // After success the form resets to idle so a new address can be entered.
+  const canSubmit = isValid && !submitting;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting) return;
+    if (!isValid) {
+      setState({ status: "error" });
+      return;
+    }
 
     const formData = new FormData(event.currentTarget);
     const website = String(formData.get("website") ?? "");
@@ -61,11 +72,13 @@ export function WaitlistForm() {
 
   const statusMessage =
     state.status === "success"
-      ? "You're on the list! Watch your inbox for launch updates."
+      ? "✓ You're on the list! Watch your inbox for launch updates."
       : state.status === "duplicate"
         ? "You're already on the waitlist — no need to sign up twice."
         : state.status === "error"
-          ? "Something went wrong. Please try again in a moment."
+          ? !isValid && email.trim() !== ""
+            ? "Please enter a valid email address."
+            : "Something went wrong. Please try again in a moment."
           : "";
 
   return (
@@ -97,8 +110,14 @@ export function WaitlistForm() {
             placeholder="Enter your email."
             required
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder:text-muted focus:outline-none lg:text-base"
+            onChange={(event) => {
+              setEmail(event.target.value);
+              if (state.status === "error" || state.status === "success") {
+                setState({ status: "idle" });
+              }
+            }}
+            disabled={submitting}
+            className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder:text-muted focus:outline-none disabled:opacity-60 lg:text-base"
           />
         </div>
 
@@ -114,20 +133,68 @@ export function WaitlistForm() {
 
         <button
           type="submit"
-          disabled={submitting}
-          className="flex h-10 shrink-0 items-center justify-center gap-1 overflow-clip rounded-pill border border-line-cta bg-linear-to-b from-[#3a3a3a] to-[#565656] pl-3 pr-2 text-sm font-medium text-[#aaa] transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:opacity-90 sm:gap-2.5 sm:px-4 lg:gap-2.5 lg:px-5 lg:text-base"
+          disabled={!canSubmit}
+          aria-disabled={!canSubmit}
+          className={
+            "flex h-10 shrink-0 items-center justify-center gap-1 overflow-clip rounded-pill border pl-3 pr-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#fd4f24] sm:gap-2.5 sm:px-4 lg:gap-2.5 lg:px-5 lg:text-base " +
+            (succeeded
+              ? "border-transparent bg-[#16a34a] text-white"
+              : submitting
+                ? "border-transparent bg-[#fd4f24] text-white opacity-80"
+                : canSubmit
+                  ? "border-transparent bg-[#fd4f24] text-white hover:bg-[#e0441d] active:bg-[#c73b18]"
+                  : "border-line-cta bg-linear-to-b from-[#3a3a3a] to-[#565656] text-[#aaa]")
+          }
         >
+          {submitting ? (
+            <svg
+              aria-hidden="true"
+              className="size-4 shrink-0 animate-spin"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-90"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+          ) : succeeded ? (
+            <svg
+              aria-hidden="true"
+              className="size-4 shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          ) : (
+            <img
+              src="/landing/icon-arrow-right.svg"
+              alt=""
+              aria-hidden="true"
+              className="size-4 shrink-0"
+              width={16}
+              height={16}
+            />
+          )}
           <span className="whitespace-nowrap">
-            {submitting ? "Adding you…" : "Get Notified"}
+            {succeeded ? "You're in!" : submitting ? "Adding you…" : "Get Notified"}
           </span>
-          <img
-            src="/landing/icon-arrow-right.svg"
-            alt=""
-            aria-hidden="true"
-            className="size-4 shrink-0"
-            width={16}
-            height={16}
-          />
         </button>
       </div>
 
