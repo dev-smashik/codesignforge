@@ -1,0 +1,162 @@
+// CoDesign Forge — waitlist application schema (Phase 1).
+//
+// Conventions:
+// - UUID primary keys generated in PostgreSQL (gen_random_uuid) so rows can be
+//   created anywhere without client-side id collisions.
+// - Uniqueness is enforced by PostgreSQL, never only in application code.
+// - Emails are stored normalized (lowercase, trimmed) — enforced by services;
+//   the unique indexes make races impossible at the database level.
+//
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// A person who asked to be notified about the launch.
+/// UNSUBSCRIBED addresses are never reactivated automatically; a deliberate
+/// resubscribe flow capturing fresh consent is required (handled in services).
+model Subscriber {
+  id String @id @db.Uuid @default(dbgenerated("gen_random_uuid()"))
+
+  /// Normalized email: lowercase + trimmed. Unique in PostgreSQL.
+  email String @unique @db.VarChar(320)
+
+  /// ACTIVE = consented and receiving emails. UNSUBSCRIBED = suppressed.
+  status SubscriberStatus @default(ACTIVE)
+
+  /// Timestamp of the explicit consent capture that created/reactivated this record.
+  consentedAt DateTime @default(now()) @db.Timestamptz(3)
+
+  /// Where consent was captured (e.g. "waiting_page", "resubscribe_page").
+  consentSource String @db.VarChar(64)
+
+  /// Optional signup attribution. Length-bounded to keep rows small.
+  signupSource String? @db.VarChar(128)
+  referrer     String? @db.VarChar(512)
+
+  /// Set when the subscriber unsubscribes. Immediately suppresses campaigns.
+  unsubscribedAt DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  emailLogs    EmailLog[]
+  outboxJobs   OutboxJob[]
+  unsubscribes UnsubscribeToken[]
+
+  @@index([status, createdAt])
+}
+
+/// Per-email permanent record. Also the delivery-state ledger the webhook
+/// updates (SENT → DELIVERED → BOUNCED/COMPLAINED/FAILED).
+model EmailLog {
+  id String @id @db.Uuid @default(dbgenerated("gen_random_uuid()"))
+
+  subscriberId String     @db.Uuid
+  subscriber   Subscriber @relation(fields: [subscriberId], references: [id], onDelete: Restrict)
+
+  status EmailStatus @default(PENDING)
+
+  /// Provider message id (Resend). Unique in PostgreSQL where available so
+  /// duplicate webhook deliveries cannot create duplicates.
+  providerMessageId String? @unique @db.VarChar(255)
+
+  /// Safe, bounded provider event metadata. Never contains message bodies or PII.
+  metadata Json?
+
+  /// Bounded error fields — no raw provider stack traces.
+  errorCode    String?  @db.VarChar(64)
+  errorMessage String?  @db.VarChar(512)
+
+  sentAt      DateTime? @db.Timestamptz(3)
+  deliveredAt DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  @@index([subscriberId, status])
+}
+
+/// Durable outbox: written in the same transaction as the business row so
+/// database writes and email scheduling cannot silently diverge (AGENTS.md §10).
+/// Claims use optimistic locking (lockedAt/lockedBy) and retries with backoff.
+model OutboxJob {
+  id String @id @db.Uuid @default(dbgenerated("gen_random_uuid()"))
+
+  subscriberId String     @db.Uuid
+  subscriber   Subscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  status OutboxJobStatus @default(PENDING)
+
+  attempts    Int @default(0)
+  maxAttempts Int @default(5)
+
+  /// Earliest time the job may run (supports retry backoff and scheduled sends).
+  runAfter DateTime @default(now()) @db.Timestamptz(3)
+
+  /// Optimistic claim by a worker. Other workers skip claimed jobs.
+  lockedAt DateTime? @db.Timestamptz(3)
+  lockedBy String?   @db.VarChar(64)
+
+  completedAt  DateTime? @db.Timestamptz(3)
+  lastErrorCode    String? @db.VarChar(64)
+  lastErrorMessage String? @db.VarChar(512)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  /// One welcome job per subscriber (the natural unit of durable work).
+  @@unique([subscriberId])
+  @@index([status, runAfter])
+}
+
+/// Revocable, cryptographically random unsubscribe token. Raw tokens are never
+/// stored — only their SHA-256 hash — so a database leak cannot unsubscribe
+/// users on the attacker's behalf.
+model UnsubscribeToken {
+  id String @id @db.Uuid @default(dbgenerated("gen_random_uuid()"))
+
+  subscriberId String     @db.Uuid
+  subscriber   Subscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  /// SHA-256 hash of the raw token. Unique in PostgreSQL so a token can be
+  /// looked up in one indexed query and cannot be guessed via sequential ids.
+  tokenHash String @unique @db.VarChar(64)
+
+  /// Revocation: set on use, supersession or subscriber unsubscription.
+  revokedAt DateTime? @db.Timestamptz(3)
+  /// First successful use of this token (audit trail).
+  usedAt    DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  @@index([subscriberId])
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  DELIVERED
+  BOUNCED
+  COMPLAINED
+  FAILED
+}
+
+enum OutboxJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}

@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/*
+ * CoDesign Forge design tokens.
+ * Source of truth: the Figma design styles
+ * (https://www.figma.com/design/RoVoBJg0v30S10QnU84Oo9).
+ */
+:root {
+  --background: #101010;
+  --foreground: #ffffff;
+
+  /* Brand neutrals */
+  --muted: #919191;
+  --muted-strong: #fafafa;
+
+  /* Surfaces & hairlines */
+  --panel: #1a1a1a;
+  --line: #2e2e2e;
+  --line-cta: #464646;
+  --line-avatar: #262626;
+  --line-hairline: rgba(53, 61, 65, 0.5);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+  --color-panel: var(--panel);
+  --color-line: var(--line);
+  --color-line-cta: var(--line-cta);
+  --color-line-avatar: var(--line-avatar);
+  --color-hairline: var(--line-hairline);
+
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-bricolage), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+
+  --radius-pill: 9999px;
+  --radius-social: 0.5rem;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Global focus visibility for keyboard navigation. */
+:focus-visible {
+  outline: 2px solid #fd4f24;
+  outline-offset: 2px;
+}
+
+/* Text inputs sit inside the bordered pill; the pill shows focus via its
+   border (focus-within), so the input itself takes no outline. */
+input:focus-visible {
+  outline: none;
+}
+
+/* Respect reduced motion: no decorative animation should run. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Partner logo marquee — seamless infinite scroll. The track renders the
+   logo set twice; translating -50% loops it without a visible jump. */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-x 32s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover / keyboard focus so content stays readable. */
+.animate-marquee:hover,
+.group:focus-within .animate-marquee {
+  animation-play-state: paused;
+}
