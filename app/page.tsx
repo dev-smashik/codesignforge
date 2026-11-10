@@ -1,99 +1,80 @@
-import { Suspense } from "react";
-import { GlobeBackdrop } from "@/components/landing/globe-backdrop";
-import { SiteHeader } from "@/components/landing/site-header";
-import { EarlyAccessBadge } from "@/components/landing/early-access-badge";
-import { WaitlistForm } from "@/components/landing/waitlist-form";
-import { SocialProof } from "@/components/landing/social-proof";
-import { PartnersRow } from "@/components/landing/partners-row";
+import type { Metadata } from "next";
+
+import { GlowBackdrop } from "@/components/home/glow-backdrop";
+import { HomeHeader } from "@/components/home/home-header";
+import { HeroBadge } from "@/components/home/hero-badge";
+import { HeroCtas } from "@/components/home/hero-ctas";
+import { PartnersStrip } from "@/components/home/partners-strip";
 import { SITE } from "@/lib/site";
-import { db } from "@/lib/db";
-import { countActiveSubscribers } from "@/modules/waitlist/repository";
-import { cacheLife } from "next/cache";
+
+export const metadata: Metadata = {
+  title: `${SITE.name} — We Design, Engineer & Scale Digital Products`,
+  description: SITE.homepageTagline,
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    title: `${SITE.name} — We Design, Engineer & Scale Digital Products`,
+    description: SITE.homepageTagline,
+  },
+};
 
 /**
- * Cached live waitlist count from PostgreSQL (ACTIVE subscribers only).
- * 'use cache' + cacheLife keeps it fresh (~minutes) without hammering the
- * DB on traffic spikes; errors return null so the caller can fall back.
- */
-async function getCachedSubscriberCount(): Promise<number | null> {
-  "use cache";
-  cacheLife("minutes");
-  try {
-    const n = await countActiveSubscribers(db);
-    return n > 0 ? n : null;
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Live waitlist count from PostgreSQL (ACTIVE subscribers only).
- * Failed lookups fall back to the non-claiming copy; a count of 0 also
- * falls back so we never render "0 people on the waitlist".
- */
-async function SocialProofWithCount() {
-  const count = await getCachedSubscriberCount();
-  return (
-    <SocialProof subscriberCount={count} fallbackCopy={SITE.waitlistFallback} />
-  );
-}
-
-/**
- * Public waitlist landing page (Phase 2).
+ * Marketing homepage (Figma desktop frame 46:13, mobile frame 85:2495).
  *
- * Layout follows the Figma frames (desktop 3:2 / mobile 4:141003):
- * header - hero (badge, headline, copy, email form, social proof) - partners.
+ * Structure: sticky navbar → centered hero (badge, headline with Playfair
+ * italic accents, supporting copy, CTA pair) → trust strip with the
+ * supplied partner marks, anchored to the bottom of the first viewport.
+ * The CTA links are internal placeholder routes (stubs) until real
+ * destination pages exist.
  *
- * The subscriber count is fetched live from the database (ACTIVE only)
- * inside a Suspense boundary so the page shell stays static and streams in
- * the count; on failure (or zero subscribers) the non-claiming fallback
- * copy is shown instead of a fabricated number.
+ * Headline font note: the design specifies "Almarena Neue" for the regular
+ * (non-italic) spans. Almarena Neue is not available on Google Fonts /
+ * next/font, so the project's brand grotesque (Bricolage Grotesque, also
+ * the design's own mobile-heading token) is used instead. The italic
+ * accents are exact: Playfair Display Medium Italic.
  */
-export default function LandingPage() {
+export default function HomePage() {
   return (
     <main className="relative flex min-h-svh flex-col overflow-x-clip">
-      <GlobeBackdrop />
+      <GlowBackdrop />
 
-      <SiteHeader />
+      <HomeHeader />
 
-      {/* Mobile hero is centered over the full viewport (Fig editor frame),
-          while the flow keeps the header + partners anchored at top/bottom. */}
-      <div
-        aria-hidden="true"
-        className="flex-1 lg:hidden"
-      />
-      <div className="absolute left-0 right-0 top-0 z-5 flex min-h-svh items-center justify-center px-4 sm:px-10 lg:static lg:z-10 lg:min-h-0 lg:flex-none lg:py-0 lg:pt-[max(2.5rem,calc(49.2svh-370px))]">
-        <div className="flex w-full max-w-155 translate-y-3.75 flex-col items-center gap-6 lg:translate-y-0 lg:gap-12">
+      {/* Hero: sits 64px under the 80px navbar (=> design top-144px on
+          desktop); mobile offset tuned to the 375px frame. */}
+      <section className="relative z-10 flex flex-1 flex-col items-center px-4 pb-10 pt-7 text-center lg:pt-16">
+        <div className="flex w-full max-w-[1280px] flex-col items-center gap-4 lg:gap-6">
           <div className="flex w-full flex-col items-center gap-4">
-            <EarlyAccessBadge />
+            <HeroBadge />
 
-            <div className="flex w-full flex-col items-center gap-6 text-center">
-              <h1 className="w-full font-brand text-[clamp(2.75rem,1.98vw+2.22rem,4rem)] font-medium leading-[1.1] tracking-[-0.02em] text-white lg:font-normal">
-                Join our website launch waitlist
-              </h1>
-              <p className="w-full max-w-[34em] text-base leading-[1.48] text-muted-strong lg:text-4.5 lg:leading-[1.44]">
-                {SITE.tagline}
-              </p>
-            </div>
+            <h1 className="max-w-[1146px] text-center font-brand font-medium text-white">
+              <span className="text-[clamp(2.5rem,3.4vw+1.6rem,4rem)] leading-[1.2] tracking-[-0.02em] lg:leading-[1.3]">
+                We{" "}
+              </span>
+              <span className="font-playfair text-[clamp(2.75rem,3.9vw+1.7rem,4rem)] font-medium italic leading-[1.1] tracking-[-0.02em] lg:leading-[1.3]">
+                Design, Engineer
+              </span>
+              <span className="text-[clamp(2.5rem,3.4vw+1.6rem,4rem)] leading-[1.2] tracking-[-0.02em] lg:leading-[1.3]">
+                {" "}
+                &amp; Scale Digital Products That Drive{" "}
+              </span>
+              <span className="font-playfair text-[clamp(2.75rem,3.9vw+1.7rem,4rem)] font-medium italic leading-[1.1] tracking-[-0.02em] lg:leading-[1.3]">
+                Business Growth.
+              </span>
+            </h1>
           </div>
 
-          <WaitlistForm />
+          <p className="w-full max-w-[996px] text-[clamp(0.875rem,1.2vw+0.65rem,1.5rem)] leading-[1.8] text-ash-300 lg:leading-[1.5] lg:text-ash-400">
+            {SITE.homepageTagline}
+          </p>
 
-          <div className="mt-6 flex justify-center lg:mt-0">
-            <Suspense
-              fallback={
-                <SocialProof
-                  subscriberCount={null}
-                  fallbackCopy={SITE.waitlistFallback}
-                />
-              }
-            >
-              <SocialProofWithCount />
-            </Suspense>
-          </div>        </div>
-      </div>
+          <div className="flex w-full flex-col items-stretch gap-1 lg:items-start">
+            <HeroCtas />
+          </div>
+        </div>
+      </section>
 
-      <PartnersRow />
+      <PartnersStrip />
     </main>
   );
 }

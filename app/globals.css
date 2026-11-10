@@ -19,6 +19,10 @@
   --line-cta: #464646;
   --line-avatar: #262626;
   --line-hairline: rgba(53, 61, 65, 0.5);
+
+  /* Homepage hero grays (Figma tokens Gray/Black-100 / Black-200). */
+  --ash-300: #d2d2d5;
+  --ash-400: #a5a5ab;
 }
 
 @theme inline {
@@ -31,11 +35,14 @@
   --color-line-cta: var(--line-cta);
   --color-line-avatar: var(--line-avatar);
   --color-hairline: var(--line-hairline);
+  --color-ash-300: var(--ash-300);
+  --color-ash-400: var(--ash-400);
 
   --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-brand: var(--font-bricolage), var(--font-inter), ui-sans-serif,
     system-ui, sans-serif;
+  --font-playfair: var(--font-playfair), ui-serif, Georgia, serif;
 
   --radius-pill: 9999px;
   --radius-social: 0.5rem;
@@ -60,6 +67,109 @@ body {
    border (focus-within), so the input itself takes no outline. */
 input:focus-visible {
   outline: none;
+}
+
+/* Navbar "Let's Talk" CTA: orange edge-glow radial gradient from the Figma
+   button fill (node 67:2099), encoded inline so no runtime request is made. */
+.cta-glow {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 135 48' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect x='0' y='0' height='100%25' width='100%25' fill='url(%23grad)' opacity='1'/%3E%3Cdefs%3E%3CradialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(5.4336e-14 4.65 -13.078 3.4822e-15 67.5 1.5)'%3E%3Cstop stop-color='rgba(255,47,0,0)' offset='0.61538'/%3E%3Cstop stop-color='rgba(255,47,0,0.44)' offset='0.76923'/%3E%3Cstop stop-color='rgba(255,47,0,0.7)' offset='0.83823'/%3E%3Cstop stop-color='rgba(249,87,18,0.85)' offset='0.879'/%3E%3Cstop stop-color='rgba(242,127,36,1)' offset='0.91976'/%3E%3Cstop stop-color='rgba(245,150,68,1)' offset='0.93982'/%3E%3Cstop stop-color='rgba(249,174,101,1)' offset='0.95988'/%3E%3Cstop stop-color='rgba(252,197,133,1)' offset='0.97994'/%3E%3Cstop stop-color='rgba(255,220,166,1)' offset='1'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E"),
+    linear-gradient(90deg, #000 0%, #000 100%);
+  background-size: 100% 100%;
+}
+
+/* Ambient stroke animation: an orange light traveling along the button's
+   border, completing a full 360° loop left→right (clockwise) at medium
+   speed. Uses a registered custom property so the conic gradient's
+   origin angle can be animated; browsers without @property support just
+   show the static resting glow, since only where the conic gradient is
+   bright does the traveling light become visible. */
+@property --cta-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes cta-stroke-spin {
+  /* Positive direction = light moves left→right across the top edge. */
+  to {
+    --cta-angle: 360deg;
+  }
+}
+
+.cta-glow::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* 1px ring exactly over the border stroke. */
+  padding: 1px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  z-index: -1;
+  background: conic-gradient(
+    from var(--cta-angle),
+    rgba(255, 125, 30, 0) 0 55%,
+    rgba(249, 87, 18, 0.55) 70%,
+    #f27f24 80%,
+    #ffdca6 92%,
+    rgba(255, 220, 166, 1) 96%,
+    rgba(255, 125, 30, 0) 100%
+  );
+  animation: cta-stroke-spin 4s linear infinite;
+}
+
+/* Figma hover state (node 67:2101 / Variant2): the edge glow inverts to a
+   bright amber→orange burst — same radial geometry, reversed and
+   brightened stops. Applied on hover and keyboard focus; background
+   swatches are not interpolatable, so keep the resting glow under it via
+   an ::after layer and cross-fade its opacity for a smooth transition. */
+.cta-glow {
+  /* ::after carries the hover gradient above the resting background. */
+  position: relative;
+  isolation: isolate;
+}
+.cta-glow::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  /* Behind the text/arrow children but above the button's own background
+     layers (negative z-index inside the isolated stacking context). */
+  z-index: -1;
+  transition: opacity 140ms ease-out;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 135 48' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect x='0' y='0' height='100%25' width='100%25' fill='url(%23grad)' opacity='1'/%3E%3Cdefs%3E%3CradialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(5.4336e-14 4.65 -13.078 3.4822e-15 67.5 1.5)'%3E%3Cstop stop-color='rgba(255,220,166,1)' offset='0'/%3E%3Cstop stop-color='rgba(252,197,133,1)' offset='0.02006'/%3E%3Cstop stop-color='rgba(249,174,101,1)' offset='0.04012'/%3E%3Cstop stop-color='rgba(245,150,68,1)' offset='0.06018'/%3E%3Cstop stop-color='rgba(242,127,36,1)' offset='0.08024'/%3E%3Cstop stop-color='rgba(249,87,18,0.85)' offset='0.121'/%3E%3Cstop stop-color='rgba(255,47,0,0.7)' offset='0.16177'/%3E%3Cstop stop-color='rgba(255,47,0,0.44)' offset='0.23077'/%3E%3Cstop stop-color='rgba(255,47,0,0)' offset='0.38462'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E");
+}
+.cta-glow:hover::after,
+.cta-glow:focus-visible::after {
+  opacity: 1;
+}
+
+/* Hover: the traveling stroke runs stronger (brighter, longer light) and
+   faster (4s → 1.2s per lap). */
+.cta-glow:hover::before,
+.cta-glow:focus-visible::before {
+  background: conic-gradient(
+    from var(--cta-angle),
+    rgba(249, 87, 18, 0.25) 0 40%,
+    rgba(249, 87, 18, 0.75) 55%,
+    rgba(245, 150, 68, 1) 65%,
+    #ffdca6 78%,
+    #fff4e2 86%,
+    rgba(249, 87, 18, 0.55) 94%,
+    rgba(249, 87, 18, 0.25) 100%
+  );
+  animation-duration: 1.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-glow::after {
+    transition: none;
+  }
 }
 
 /* Respect reduced motion: no decorative animation should run. */

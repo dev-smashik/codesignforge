@@ -17,52 +17,52 @@ const VIEWPORTS = [
   { width: 1920, height: 1080 },
 ] as const;
 
-for (const viewport of VIEWPORTS) {
-  test(`landing renders without horizontal overflow at ${viewport.width}px`, async ({
-    page,
-    browserName,
-  }) => {
-    test.skip(browserName !== "chromium");
-    await page.setViewportSize({ ...viewport });
-    await page.goto("/", { waitUntil: "networkidle" });
+const PAGES = [
+  { path: "/", name: "homepage" },
+  { path: "/waitlist", name: "waitlist" },
+] as const;
 
-    // No horizontal overflow at the root.
-    const overflow = await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth - document.documentElement.clientWidth,
-    );
-    expect(overflow).toBeLessThanOrEqual(0);
+for (const page2 of PAGES) {
+  for (const viewport of VIEWPORTS) {
+    test(`${page2.name} renders without horizontal overflow at ${viewport.width}px`, async ({
+      page,
+      browserName,
+    }) => {
+      test.skip(browserName !== "chromium");
+      await page.setViewportSize({ ...viewport });
+      await page.goto(page2.path, { waitUntil: "networkidle" });
 
-    // Headline must be fully inside the viewport width.
-    const h1 = page.locator("h1");
-    await expect(h1).toBeVisible();
-    const h1Box = await h1.boundingBox();
-    if (h1Box) {
-      expect(h1Box.x).toBeGreaterThanOrEqual(0);
-      expect(h1Box.x + h1Box.width).toBeLessThanOrEqual(viewport.width + 1);
-    }
+      // No horizontal overflow at the root.
+      const overflow = await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      );
+      expect(overflow).toBeLessThanOrEqual(0);
 
-    // Phases: the form exists and is keyboard reachable (verified without
-    // stealing focus before the design-comparison screenshot).
-    const emailInput = page.getByLabel(/email address/i);
-    await emailInput.focus();
-    await expect(emailInput).toBeFocused();
+      // Headline must be fully inside the viewport width.
+      const h1 = page.locator("h1");
+      await expect(h1).toBeVisible();
+      const h1Box = await h1.boundingBox();
+      if (h1Box) {
+        expect(h1Box.x).toBeGreaterThanOrEqual(0);
+        expect(h1Box.x + h1Box.width).toBeLessThanOrEqual(viewport.width + 1);
+      }
 
-    // Screenshot for manual design comparison; focus ring is reset first so
-    // the capture matches the resting state.
-    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-    await page.mouse.move(0, 0);
-    await page.waitForTimeout(120);
-    await page.screenshot({
-      path: `tests/e2e/__screenshots__/landing-${viewport.width}.png`,
-      fullPage: false,
+      // Screenshot for manual design comparison.
+      await page.mouse.move(0, 0);
+      await page.waitForTimeout(120);
+      await page.screenshot({
+        path: `tests/e2e/__screenshots__/${page2.name}-${viewport.width}.png`,
+        fullPage: false,
+      });
     });
-  });
+  }
 }
 
 test("signup form announces submit feedback", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/", { waitUntil: "networkidle" });
+  await page.goto("/waitlist", { waitUntil: "networkidle" });
 
   const emailInput = page.getByLabel(/email address/i);
   await emailInput.focus();

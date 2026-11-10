@@ -19,6 +19,15 @@ export const SITE = {
   /** Placeholder partner-row copy; replace with verified content at launch. */
   partnersPlaceholderNotice:
     "Partner marks shown are development placeholders",
+  /** Homepage hero supporting copy (source: Figma homepage design). */
+  homepageTagline:
+    "We partner with ambitious startups, B2B SaaS companies, and enterprise teams to transform ideas into exceptional digital experiences through strategic product design, modern engineering, and AI powered solutions.",
+  /**
+   * Trust strip copy — carried over verbatim from the Figma homepage
+   * design (node 81:2230). Owner must verify the 30+ figure before
+   * publishing; adjust here if it cannot be substantiated.
+   */
+  trustedLabel: "Trusted by 30+ companies",
 } as const;
 
 interface SocialEntry {
@@ -42,3 +51,24 @@ export function getSocialLinks(): SocialEntry[] {
     href: socialUrlFromEnv(platform),
   }));
 }
+
+const TALKS = "Let\u2019s Talk";
+
+/**
+ * Homepage navigation (Figma homepage design). hrefs are placeholder routes
+ * (stub actions until real pages exist) — they must never be invented
+ * external destinations.
+ */
+export const NAV_LINKS = [
+  { label: "Services", href: "/services", hasChevron: true },
+  { label: "Projects", href: "/projects" },
+  { label: "Insights", href: "/insights" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "More", href: "/more" },
+] as const;
+
+/** Header / hero call-to-action links (placeholder internal routes). */
+export const CTA_LINKS = {
+  letstalk: { label: TALKS, href: "/contact" },
+  projects: { label: "Our Projects", href: "/projects" },
+} as const;
