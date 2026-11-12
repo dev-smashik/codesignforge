@@ -15,7 +15,7 @@ export function HomeHeader() {
   return (
     <header className="relative z-40">
       <div className="sticky top-0 z-40 backdrop-blur-2xl">
-        <div className="mx-auto flex w-full min-w-0 max-w-[1300px] items-center justify-between px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 min-[1400px]:px-0">
+        <div className="mx-auto flex w-full min-w-0 max-w-[1280px] items-center justify-between px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 min-[1400px]:px-0">
           <Link
             href="/"
             className="flex items-center gap-2 rounded-md focus-visible:outline-offset-4"
@@ -35,7 +35,7 @@ export function HomeHeader() {
           </Link>
 
           {/* Desktop nav (Figma: hidden on mobile, hamburger instead) */}
-          <nav aria-label="Primary" className="hidden lg:block">
+          <nav aria-label="Primary" className="hidden min-[1200px]:block">
             <ul role="list" className="flex items-stretch">
               {NAV_LINKS.map((link) => (
                 <li key={link.label}>
@@ -61,11 +61,11 @@ export function HomeHeader() {
           </nav>
 
           {/* Right side: button container is 219px wide, justify-end */}
-          <div className="flex items-center justify-end lg:w-[219px]">
+          <div className="flex items-center justify-end min-[1200px]:w-[219px]">
             <MobileMenu />
             <Link
               href={CTA_LINKS.letstalk.href}
-              className="cta-glow hidden h-12 items-center justify-center gap-1 rounded-social border border-[#dc532c] pb-[11px] pl-5 pr-4 pt-3 font-brand text-base font-medium text-white transition-opacity lg:flex"
+              className="cta-glow hidden h-12 items-center justify-center gap-1 rounded-social border border-[#dc532c] pb-[11px] pl-5 pr-4 pt-3 font-brand text-base font-medium text-white transition-opacity min-[1200px]:flex"
             >
               {CTA_LINKS.letstalk.label}
               <img

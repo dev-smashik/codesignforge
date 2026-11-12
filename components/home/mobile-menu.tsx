@@ -24,7 +24,7 @@ export function MobileMenu() {
   }, [open]);
 
   return (
-    <div className="relative lg:hidden">
+    <div className="relative min-[1200px]:hidden">
       <button
         type="button"
         aria-expanded={open}

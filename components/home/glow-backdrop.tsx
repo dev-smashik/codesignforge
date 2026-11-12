@@ -1,24 +1,21 @@
 /**
  * Homepage background: the supplied radial orange "glow" bitmap, blurred
- * (145px blur radius per the design), pinned to the bottom of the viewport
- * and fully decorative (pointer-events-none). Reduced motion / static by
- * construction — it's a plain image, no canvas or WebGL involved.
+ * (95px blur radius), positioned to match the desktop and mobile Figma frames.
+ * The glow gently pulses without affecting foreground content and stays still
+ * for visitors who prefer reduced motion.
  */
 export function GlowBackdrop() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-clip"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
     >
       <img
         src="/landing/home/glow-bg.png"
         alt=""
-        className="absolute inset-0 size-full object-cover object-bottom blur-[20px]"
+        className="absolute inset-x-0 top-[-133px] h-[945px] w-full blur-[95px] object-fill object-bottom lg:top-0 lg:h-[1080px]"
       />
-      {/* The design keeps the upper viewport nearly #101010 with the glow
-          concentrated low; the blurred bitmap alone washes the top, so a
-          scrim restores the intended falloff. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#101010] from-[16%] via-[#101010]/60 via-[45%] to-transparent" />
+      <div className="animate-glow-backdrop absolute -inset-x-[12%] top-[32%] h-[55%] bg-[radial-gradient(ellipse_at_34%_68%,rgba(255,125,70,0.48)_0%,rgba(244,77,34,0.25)_31%,transparent_68%),radial-gradient(ellipse_at_66%_72%,rgba(255,30,66,0.36)_0%,rgba(180,0,35,0.2)_34%,transparent_70%)] blur-[100px] lg:top-[38%] lg:h-[62%]" />
     </div>
   );
 }
