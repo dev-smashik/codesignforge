@@ -1,70 +1,69 @@
-<div align="center">
+# Codesign Forge
 
-# CoDesign Forge
+A responsive coming soon page for Codesign Forge with an email notification subscription API.
 
-**Pre-launch waitlist & launch-email platform**
+## Stack
 
-CoDesign Forge is a fast, lightweight waitlist application that turns
-visitors into opted-in subscribers, then delivers launch emails reliably
-and compliantly. It pairs a polished public landing page — with a custom
-SVG wireframe globe, animated logo marquee, and a live subscriber count —
-with a durable email pipeline built on transactional outbox delivery.
+- Next.js App Router and React
+- TypeScript and Tailwind CSS v4
+- Prisma ORM 7 with PostgreSQL
+- Zod request validation
 
-[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org)
-[![React 19](https://img.shields.io/badge/React-19-61dafb)](https://react.dev)
-[![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178c6)](https://www.typescriptlang.org)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-38bdf8)](https://tailwindcss.com)
-[![PostgreSQL + Prisma 7](https://img.shields.io/badge/Prisma-7-2d3748)](https://www.prismaorm.com)
-[![Resend](https://img.shields.io/badge/Resend-0f0f0f)](https://resend.com)
+## Local setup
 
-</div>
+1. Install Node.js 24 and npm.
+2. Copy `.env.example` to `.env` and replace the placeholders with your Prisma Postgres values:
+   - `DATABASE_URL`: pooled connection for application requests.
+   - `DIRECT_URL`: direct connection for Prisma commands and migrations.
+   - `RATE_LIMIT_SECRET`: a random private value used to hash client IPs for API rate limiting.
+3. Install dependencies and generate Prisma Client:
 
----
+   ```bash
+   npm install
+   ```
 
-A visitor lands on the page, enters their email with explicit consent, and
-is saved to PostgreSQL in a single transaction alongside a durable
-welcome-email job — so a subscriber is never lost, even if sending fails.
-A background processor delivers the welcome email through Resend, and every
-delivery, bounce, and complaint is tracked and suppressed automatically.
-Unsubscribe links use secure, revocable tokens and take effect immediately.
+   The `postinstall` script runs `prisma generate`.
+4. Apply database migrations:
 
-**Highlights**
+   ```bash
+   npm run db:migrate
+   ```
 
-- Static, server-rendered landing page — instant first load, single client
-  component (the signup form), no framework bloat
-- Live subscriber count from the database, cached for freshness, with a
-  graceful non-claiming fallback — no fabricated claims anywhere
-- Honeypot + rate limiting on signup; Zod validation at the server boundary
-- Idempotent Resend webhooks with signature verification
-- Fully responsive (360px → 1920px) and accessible (keyboard navigation,
-  `aria-live` feedback, `prefers-reduced-motion` support)
+5. Start the development server:
 
-**Stack:** Next.js 16 · React 19 · TypeScript (strict) · Tailwind CSS v4 ·
-PostgreSQL + Prisma 7 · Resend + React Email · Zod · Upstash Redis ·
-Vitest · Playwright
+   ```bash
+   npm run dev
+   ```
 
-## Quick Start
+To create a random rate-limit secret with Node.js:
 
 ```bash
-git clone https://github.com/YOURNAME/codesignforge.git
-cd codesignforge
-npm install
-cp .env.example .env    # fill in DATABASE_URL, RESEND_API_KEY, EMAIL_FROM, ...
-npm run db:deploy
-npm run dev             # http://localhost:3000
+node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
 ```
 
-## Scripts
+## Useful commands
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm run lint` / `npm run typecheck` | Lint + type check |
-| `npm test` | Unit tests |
-| `npm run db:generate` / `db:migrate` / `db:deploy` | Prisma client + migrations |
+```bash
+npm run dev         # local development
+npm run lint        # ESLint
+npm run typecheck   # TypeScript
+npm run db:migrate  # apply committed Prisma migrations
+npm run build       # production build
+npm run start       # run the production build
+npx prisma validate # validate the Prisma schema
+npx prisma generate # regenerate Prisma Client
+```
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the production checklist.
+There is no automated test script configured in this repository yet.
 
-> Email verification is intentionally not part of this product version — the
-> app never claims an address is verified.
+## GitHub and Vercel
+
+- Commit `package-lock.json`, Prisma schema and migration files, and `.env.example`.
+- `.gitignore` excludes local environment files, generated Prisma Client, `node_modules`, `.next`, and Vercel build output.
+- Import the repository into Vercel as a Next.js project. The default install and build commands are sufficient; no `vercel.json` is needed.
+- Set `DATABASE_URL`, `DIRECT_URL`, and `RATE_LIMIT_SECRET` in Vercel for each required environment. Keep the pooled URL in `DATABASE_URL` and the direct URL in `DIRECT_URL`.
+- Apply pending database migrations with `npm run db:migrate` before deploying code that depends on them. Vercel's standard build does not run database migrations automatically.
+- Prisma Client is generated by the install lifecycle script. Vercel currently defaults to Node.js 24, which satisfies the package's Node.js engine requirement.
+- Use Node.js 24 or newer for Prisma ORM 7. The `Digital Display` font is provided under its non-commercial license; see `public/fonts/digital-display-license.txt`.
+
+Do not commit `.env` or any production connection string. Rotate any database credential that has been shared outside the deployment secret store, then update local and Vercel environment variables.
