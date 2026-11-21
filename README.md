@@ -56,6 +56,37 @@ npx prisma generate # regenerate Prisma Client
 
 There is no automated test script configured in this repository yet.
 
+## Deploying to cPanel
+
+This application requires a cPanel plan that includes **Setup Node.js App / Application Manager** and a supported Node.js runtime. It cannot be deployed as a static site because `/api/notifications/subscribe` runs on the server and writes to PostgreSQL. The standalone output is configured in `next.config.ts` and keeps that API available.
+
+### Build the upload package
+
+Use Node.js 24 or newer on a Linux machine (or the cPanel server's terminal):
+
+```bash
+npm ci
+npm run build
+npm run deploy:cpanel
+```
+
+The last command creates `cpanel-deploy/`. Upload the **contents** of that folder into the application root selected in cPanel's Node.js Application Manager. Build the package on Linux when possible; standalone output can contain platform-specific native modules and should not be built on Windows for Linux hosting.
+
+### Configure the cPanel application
+
+1. In **Setup Node.js App**, create an application using Node.js 24 or newer, production mode, and the domain/subdomain you want to use. Set the application root to the directory where you uploaded the package.
+2. Set the startup file to `server.js`.
+3. Add these environment variables in the application settings:
+   - `NODE_ENV=production`
+   - `DATABASE_URL` — PostgreSQL connection URL reachable from the cPanel host.
+   - `DIRECT_URL` — direct PostgreSQL connection URL used for migrations (may match `DATABASE_URL` if your provider does not issue a separate URL).
+   - `RATE_LIMIT_SECRET` — a private random value; generate one with `node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"`.
+4. Click **Run NPM Install** in Application Manager (or run `npm ci --omit=dev` from the application root). If you use `npm ci --omit=dev`, Prisma CLI is a dev dependency; run migrations before omitting dev dependencies or install Prisma CLI separately for migrations. Prisma Client is generated during installation by `postinstall`.
+5. Before switching traffic, apply the committed database migrations from the project/build environment with `npm run db:migrate`, configured with `DIRECT_URL` and `DATABASE_URL`.
+6. Restart the application in Application Manager.
+
+The cPanel Node.js feature is supplied by the hosting provider, and providers can vary in Node.js versions, PostgreSQL access, and reverse-proxy setup. If Application Manager or Node.js 24 is unavailable, ask the host to enable a compatible Node.js application environment; static file hosting alone cannot run this app's subscription API.
+
 ## GitHub and Vercel
 
 - Commit `package-lock.json`, Prisma schema and migration files, and `.env.example`.
