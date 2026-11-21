@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "postinstall": "prisma generate",
+    "postinstall": "node -e \"const p=require('node:path'),c=require('node:child_process');let r=process.cwd(),a=r.split(p.sep),n=a.lastIndexOf('nodevenv');if(n>=0){const t=a.slice(n+1),v=t.findIndex(x=>/^[0-9]/.test(x));if(v<0)throw Error('Cannot resolve cPanel app root');r=p.resolve(p.sep,...a.slice(1,n),...t.slice(0,v));}c.execFileSync('prisma',['generate','--config',p.join(r,'prisma7.config.ts'),'--schema',p.join(r,'prisma/schema.prisma')],{cwd:r,stdio:'inherit'});\"",
     "db:migrate": "prisma migrate deploy"
   },
   "dependencies": {
