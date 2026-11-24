@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { HomeNavbar } from "@/components/home/home-navbar";
 
 const gallery = [
   { src: "/assets/hero/f2d5e.png", height: 517 },
@@ -72,10 +73,11 @@ export function HomePage() {
     setCopyStatus(value);
     window.setTimeout(() => setCopyStatus(""), 1800);
   };
-  return <main className="home-page">
+  return <>
+    <HomeNavbar />
+    <main className="home-page">
     <section className="home-hero" id="home">
       <div className="hero-glow" aria-hidden="true" /><div className="reeded-glass" aria-hidden="true" />
-      <header className="home-nav"><a className="wordmark" href="#home"><Image src="/assets/footer/60ef7.svg" alt="" width={40} height={40} />CoDesign Forge</a><nav><a href="#services">Services</a><a href="#projects">Projects</a><a href="#insights">Insights</a><a href="#pricing">Pricing</a><a href="#more">More</a></nav><a href="#contact" className="nav-cta">Let&apos;s Talk ↗</a></header>
       <div className="hero-copy"><div className="hero-pill"><i />Crafted by Humans. Accelerated by AI</div><h1>We <em>Design, Engineer</em> &amp; Scale Digital Products That Drive <em>Business Growth.</em></h1><p>We partner with ambitious startups, B2B SaaS companies, and enterprise teams to transform ideas into exceptional digital experiences through strategic product design, modern engineering, and AI powered solutions.</p><ArrowButton>Book a free strategy call</ArrowButton></div>
       <div className="hero-gallery">{gallery.map((im, i) => <div className={`hero-shot shot-${i + 1}`} key={im.src} style={{ height: `${im.height}px` }}><Image src={im.src} alt="CoDesign Forge project preview" width={604} height={1034} priority={i === 0} /></div>)}</div>
       <div className="role-badge role-left"><Image className="role-pointer" src="/assets/hero/93ec8.svg" alt="" width={30} height={32}/><b>Lead Developer</b></div><div className="role-badge role-right"><Image className="role-pointer" src="/assets/hero/0acf6.svg" alt="" width={30} height={32}/><b>Lead designer</b></div>
@@ -106,5 +108,6 @@ export function HomePage() {
     <section className="contact-section" id="contact"><div className="section-wrap contact-grid"><div className="contact-copy"><h2>Unlock Your Brand&apos;s Potential at No Cost.</h2><p>Tell us what you are building and when it needs to ship. We reply within one working day.</p><button onClick={() => void copyContact("hello@codesignforge.com")}><Image src="/assets/contact/f0a1f.svg" alt="" width={20} height={20}/>hello@codesignforge.com <Image src="/assets/contact/11f23.svg" alt="Copy" width={18} height={18}/></button><button onClick={() => void copyContact("+880 1621 942031")}><Image src="/assets/contact/555d1.png" alt="" width={20} height={20}/>+880 1621 942031 <Image src="/assets/contact/11f23.svg" alt="Copy" width={18} height={18}/></button>{copyStatus && <span className="copy-toast" role="status">Copied</span>}</div><ContactForm /></div></section>
 
     <footer className="home-footer" id="more"><div className="section-wrap footer-grid"><div className="footer-brand"><a className="wordmark" href="#home"><Image src="/assets/footer/60ef7.svg" alt="" width={45} height={45} />CoDesign Forge</a><p>We partner with ambitious businesses to design, build, and scale exceptional digital products through strategy, creativity, and modern engineering.</p><span>Follow us on</span><div className="footer-social">{[["91a8d.svg","Facebook"],["7634c.svg","Instagram"],["4ed93.svg","X"],["2000e.svg","LinkedIn"],["8de61.svg","Behance"],["046f3.svg","Dribbble"]].map(([src,label])=><a href="#more" aria-label={label} key={label}><Image src={`/assets/footer/${src}`} alt="" width={24} height={24}/></a>)}</div></div><div><h3>Explore</h3><a href="#home">Home</a><a href="#about">About Us</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="#pricing">Pricing</a></div><div><h3>Our Services</h3><a href="#services">Branding &amp; Identity</a><a href="#services">UI/UX &amp; Product Design</a><a href="#services">Web &amp; Software Development</a><a href="#services">Webflow &amp; Framer Development</a></div><div><h3>Contact</h3><span>Dhaka, Bangladesh</span><span>+880 1621 942031</span><span>hello@codesignforge.com</span></div></div><div className="footer-meta section-wrap"><span>Terms &amp; Conditions</span><span>© 2026 Codesign Forge. All rights reserved.</span><span>Privacy Policy</span></div><div className="giant-wordmark"><Image src="/assets/footer/30cdc.svg" alt="CoDesign Forge" width={1280} height={116}/></div></footer>
-  </main>;
+    </main>
+  </>;
 }
