@@ -282,6 +282,139 @@ function WhyChooseUsSection() {
   );
 }
 
+const testimonials = [
+  {
+    quote: <><span>"Working with Codesign Forge</span><em> was smooth and efficient. </em><span>They understood our vision</span><em> and </em><span>delivered exactly</span><em> what we needed."</em></>,
+    name: "Rohidul Islam",
+    role: "Software Engineer",
+    company: "siteassist",
+    companyClass: "siteassist",
+    image: "c39de.png",
+  },
+  {
+    quote: <><em>"They </em><span>quickly understood our requirements</span><em> and turned our ideas into a practical solution. </em><span>Highly recommended!</span><em>"</em></>,
+    name: "Arbaz Khan",
+    role: "Founder",
+    company: "Khantrast",
+    companyClass: "khantrast",
+    image: "50690.png",
+  },
+  {
+    quote: <><em>"</em><span>Codesign Forge</span><em> delivered an excellent experience with </em><span>seamless communication</span><em>, thoughtful collaboration, and </em><span>outstanding attention to detail."</span></>,
+    name: "RaShaun Brown",
+    role: "Co-Founder",
+    company: "Screen Skinz",
+    companyClass: "screenskinz",
+    image: "510e2.png",
+  },
+  {
+    quote: <><em>"From the initial discussion to final delivery, </em><span>everything was handled professionally. </span><em>Looking forward to </em><span>working together again."</span></>,
+    name: "Piotr Czernik",
+    role: "Founder",
+    company: "spawndrop",
+    companyClass: "spawndrop",
+    image: "46a9a.png",
+  },
+];
+
+function TestimonialsSection() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!stage || !viewport || !track) return;
+
+    let frame = 0;
+    const updatePosition = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+        const pinDistance = Math.max(1, stage.offsetHeight - viewport.offsetHeight);
+        const progress = Math.min(1, Math.max(0, -stage.getBoundingClientRect().top / pinDistance));
+        track.style.transform = `translate3d(${-distance * progress}px, 0, 0)`;
+        stage.style.height = `${viewport.offsetHeight + distance}px`;
+      });
+    };
+
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, []);
+
+  const scrollCards = (direction: -1 | 1) => {
+    const stage = stageRef.current;
+    const viewport = viewportRef.current;
+    if (!stage || !viewport) return;
+    const distance = Math.max(0, (trackRef.current?.scrollWidth ?? 0) - viewport.clientWidth);
+    const pinDistance = Math.max(1, stage.offsetHeight - viewport.offsetHeight);
+    const progress = Math.min(1, Math.max(0, -stage.getBoundingClientRect().top / pinDistance));
+    const cardStep = viewport.clientWidth < 760 ? viewport.clientWidth * 0.82 : 416;
+    const nextProgress = Math.min(1, Math.max(0, (progress * distance + cardStep * direction) / Math.max(distance, 1)));
+    window.scrollTo({ top: window.scrollY + (nextProgress - progress) * pinDistance, behavior: "smooth" });
+  };
+
+  return (
+    <div className="testimonials-scroll-stage" ref={stageRef}>
+      <section className="testimonials" aria-labelledby="testimonials-heading">
+        <div className="testimonials-content" ref={viewportRef}>
+          <header className="testimonial-header">
+            <h2 id="testimonials-heading">Building Trust Through Every Partnership</h2>
+            <div className="testimonial-controls">
+              <button type="button" aria-label="Previous testimonial" onClick={() => scrollCards(-1)}><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 5s-5 3.68-5 5 5 5 5 5" /></svg></button>
+              <button type="button" aria-label="Next testimonial" onClick={() => scrollCards(1)}><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 5s5 3.68 5 5-5 5-5 5" /></svg></button>
+            </div>
+          </header>
+          <div className="testimonial-viewport" aria-label="Client testimonials">
+            <div className="testimonial-track" ref={trackRef}>
+              <article className="rating-card">
+                <div className="rating-details">
+                  <div className="rating-value"><strong>4.8</strong><span className="rating-stars" aria-label="Rated 4.8 out of 5">★★★★★</span></div>
+                  <p>Over 10+ Reviews</p>
+                </div>
+                <div className="rating-platforms" aria-label="Fiverr, Upwork, 99designs, and Freelancer">
+                  <Image src="/assets/testimonials/49b7a.svg" alt="Fiverr" width={67} height={20} />
+                  <Image src="/assets/testimonials/71050.svg" alt="Upwork" width={66} height={20} />
+                  <Image src="/assets/testimonials/30f84.svg" alt="99designs" width={84} height={20} />
+                  <Image src="/assets/testimonials/316ac.svg" alt="Freelancer" width={82} height={20} />
+                </div>
+              </article>
+              {testimonials.map((testimonial) => (
+                <article className="quote-card" key={testimonial.name}>
+                  <div className="testimonial-content">
+                    <div className={`testimonial-company testimonial-company-${testimonial.companyClass}`} aria-label={testimonial.company}>
+                      {testimonial.companyClass === "siteassist" ? <><Image src="/assets/testimonials/babbb.svg" alt="" width={21} height={21} /><span>siteassist</span></> : null}
+                      {testimonial.companyClass === "khantrast" ? <span>Khantrast</span> : null}
+                      {testimonial.companyClass === "screenskinz" ? <Image src="/assets/trusted/a1a6d.png" alt="Screen Skinz" width={96} height={22} /> : null}
+                      {testimonial.companyClass === "spawndrop" ? <><Image src="/assets/testimonials/7355a.svg" alt="" width={15} height={16} /><span>spawndrop</span></> : null}
+                    </div>
+                    <div className="testimonial-body">
+                      <div className="testimonial-rating"><span aria-label="5 out of 5 stars">★★★★★</span><b>5.0 <sup>/ 5</sup></b></div>
+                      <blockquote>{testimonial.quote}</blockquote>
+                    </div>
+                  </div>
+                  <footer>
+                    <Image src={`/assets/testimonials/${testimonial.image}`} alt="" width={48} height={48} />
+                    <span><strong>{testimonial.name}</strong><small>{testimonial.role}</small></span>
+                  </footer>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function Accordion({ items }: { items: string[] }) {
   const [active, setActive] = useState(0);
   return <div className="faq-list">{items.map((title, i) => {
@@ -375,7 +508,6 @@ function ContactForm() {
 }
 
 export function HomePage() {
-  const testimonialTrack = useRef<HTMLDivElement>(null);
   const [copyStatus, setCopyStatus] = useState("");
 
   const copyContact = async (value: string) => {
@@ -455,7 +587,7 @@ export function HomePage() {
 
     <WhyChooseUsSection />
 
-    <section className="testimonials"><div className="section-wrap"><div className="testimonial-header"><h2>Building Trust Through Every Partnership</h2><div><button aria-label="Previous testimonial" onClick={()=>testimonialTrack.current?.scrollBy({left:-416,behavior:"smooth"})}>←</button><button aria-label="Next testimonial" onClick={()=>testimonialTrack.current?.scrollBy({left:416,behavior:"smooth"})}>→</button></div></div><div className="testimonial-track" ref={testimonialTrack}><article className="rating-card"><strong>4.8</strong><span>★★★★★</span><p>Over 10+ Reviews</p><small>fiverr　upwork　99designs　freelancer</small></article>{[["Working with Codesign Forge was smooth and efficient. They understood our vision and delivered exactly what we needed.", "Rohidul Islam", "Software Engineer", "siteassist", "c39de.png"], ["Codesign Forge delivered an excellent experience with seamless communication, thoughtful collaboration, and outstanding attention to detail.", "RaShaunBrown", "Co-Founder", "codesign", "510e2.png"], ["They quickly understood our requirements and turned our ideas into a practical solution. Highly recommended!", "Arbaz Khan", "Founder", "Khantrast", "50690.png"], ["From the initial discussion to final delivery, everything was handled professionally. Looking forward to working together again.", "Piotr Czernik", "Founder", "spawndrop", "46a9a.png"]].map((t) => <article className="quote-card" key={t[1]}><b>{t[3]}</b><p>“{t[0]}”</p><footer><Image src={`/assets/testimonials/${t[4]}`} alt="" width={48} height={48}/><span><strong>{t[1]}</strong><small>{t[2]}</small></span></footer></article>)}</div></div></section>
+    <TestimonialsSection />
 
     <section className="faq-section"><div className="section-wrap faq-wrap"><h2>Frequently asked questions</h2><Accordion items={questions} /></div></section>
 
