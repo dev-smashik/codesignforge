@@ -3,15 +3,8 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { HomeNavbar } from "@/components/home/home-navbar";
-
-const gallery = [
-  { src: "/assets/hero/f2d5e.png", height: 517 },
-  { src: "/assets/hero/717a5.png", height: 407 },
-  { src: "/assets/hero/f8af1.png", height: 360 },
-  { src: "/assets/hero/6f7bf.png", height: 361 },
-  { src: "/assets/hero/eae1d.png", height: 408 },
-  { src: "/assets/hero/11c8e.png", height: 517 },
-];
+import { AnimatedStroke } from "@/components/home/animated-stroke";
+import { ProjectGallery } from "@/components/home/project-gallery";
 
 const services = [
   { title: "UI/UX & Product Design", description: "We transform complex ideas into intuitive, user centered digital experiences. From product strategy and UX research to interface design and design systems, we create products that users love and businesses grow with.", bullets: ["Research and discovery", "Interface design", "UX flows and prototypes", "Design systems"] },
@@ -34,6 +27,10 @@ const firstAnswer = ["Codesign Forge is a digital product design and development
 
 function ArrowButton({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return <a className={`forge-button${light ? " forge-button-light" : ""}`} href="#contact"><span>{children}</span><span className="button-arrow" aria-hidden="true">↗</span><span className="button-arrow button-arrow-copy" aria-hidden="true">↗</span></a>;
+}
+
+function HeroAction() {
+  return <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">Book a free strategy call</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedStroke className="hero-action-stroke" /></a>;
 }
 
 function Accordion({ items, faq = false }: { items: typeof services | string[]; faq?: boolean }) {
@@ -77,10 +74,19 @@ export function HomePage() {
     <HomeNavbar />
     <main className="home-page">
     <section className="home-hero" id="home">
-      <div className="hero-glow" aria-hidden="true" /><div className="reeded-glass" aria-hidden="true" />
-      <div className="hero-copy"><div className="hero-pill"><i />Crafted by Humans. Accelerated by AI</div><h1>We <em>Design, Engineer</em> &amp; Scale Digital Products That Drive <em>Business Growth.</em></h1><p>We partner with ambitious startups, B2B SaaS companies, and enterprise teams to transform ideas into exceptional digital experiences through strategic product design, modern engineering, and AI powered solutions.</p><ArrowButton>Book a free strategy call</ArrowButton></div>
-      <div className="hero-gallery">{gallery.map((im, i) => <div className={`hero-shot shot-${i + 1}`} key={im.src} style={{ height: `${im.height}px` }}><Image src={im.src} alt="CoDesign Forge project preview" width={604} height={1034} priority={i === 0} /></div>)}</div>
-      <div className="role-badge role-left"><Image className="role-pointer" src="/assets/hero/93ec8.svg" alt="" width={30} height={32}/><b>Lead Developer</b></div><div className="role-badge role-right"><Image className="role-pointer" src="/assets/hero/0acf6.svg" alt="" width={30} height={32}/><b>Lead designer</b></div>
+      <div className="hero-glow" aria-hidden="true" /><div className="reeded-glass" aria-hidden="true">{Array.from({ length: 36 }, (_, index) => <div className="reeded-glass-pane" key={index} />)}</div>
+      <div className="hero-copy">
+        <div className="hero-heading-group">
+          <div className="hero-pill"><Image src="/assets/hero/e4bce.svg" alt="" width={8} height={8} />Crafted by Humans. Accelerated by AI</div>
+          <h1>We <em>Design, Engineer</em> &amp; Scale Digital Products That Drive <em>Business Growth.</em></h1>
+        </div>
+        <div className="hero-details">
+          <p>We partner with ambitious startups, B2B SaaS companies, and enterprise teams to transform ideas into exceptional digital experiences through strategic product design, modern engineering, and AI powered solutions.</p>
+          <HeroAction />
+        </div>
+      </div>
+      <ProjectGallery />
+      <div className="role-badge role-left"><Image className="role-pointer" src="/assets/hero/role-developer-pointer.svg" alt="" width={39} height={42}/><div className="role-label"><b>Lead Developer</b></div></div><div className="role-badge role-right"><Image className="role-pointer" src="/assets/hero/0acf6.svg" alt="" width={30} height={32}/><b>Lead designer</b></div>
     </section>
 
     <section className="trusted"><p>These companies trust us</p><div className="trusted-logos"><Image src="/assets/trusted/a1a6d.png" alt="Screen Skinz" width={172} height={42} /><div><Image src="/assets/trusted/07dbc.svg" alt="" width={40} height={40} /><b>siteassist</b></div><div><Image src="/assets/trusted/729dd.svg" alt="" width={38} height={40} /><b>aarsis</b></div><b>Khantrast</b><Image src="/assets/trusted/ba915.png" alt="Elutropia" width={183} height={42} /><div><Image src="/assets/trusted/4c096.svg" alt="" width={24} height={24} /><Image src="/assets/trusted/dd033.svg" alt="spawndrop" width={190} height={36} /></div></div></section>

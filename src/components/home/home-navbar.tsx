@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { AnimatedStroke } from "@/components/home/animated-stroke";
 
 const links = [
   ["Services", "#services"],
@@ -11,11 +12,6 @@ const links = [
   ["More", "#more"],
 ] as const;
 
-const strokeTrail = Array.from({ length: 24 }, (_, index) => ({
-  length: 24 - index,
-  opacity: index / 23,
-}));
-
 function TalkButton() {
   return (
     <a
@@ -23,37 +19,7 @@ function TalkButton() {
       href="#contact"
     >
       <span>Let’s Talk</span>
-      <svg className="nav-button-stroke" viewBox="0 0 134.5 49.5" preserveAspectRatio="none" aria-hidden="true">
-        {strokeTrail.map(({ length, opacity }) => {
-          const offset = length - 24;
-
-          return (
-            <rect
-              key={length}
-              x=".25"
-              y=".25"
-              width="134"
-              height="49"
-              rx="8.25"
-              fill="none"
-              stroke="#f97316"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeOpacity={opacity}
-              pathLength="100"
-              strokeDasharray={`${length} ${100 - length}`}
-            >
-              <animate
-                attributeName="stroke-dashoffset"
-                from={offset}
-                to={offset - 100}
-                dur="6s"
-                repeatCount="indefinite"
-              />
-            </rect>
-          );
-        })}
-      </svg>
+      <AnimatedStroke className="nav-button-stroke" />
       <Image src="/assets/case-studies/1e04d.svg" alt="" width={24} height={24} />
     </a>
   );
