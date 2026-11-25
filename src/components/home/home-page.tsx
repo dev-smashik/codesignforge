@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { AnimatedStroke } from "@/components/home/animated-stroke";
 import { ProjectGallery } from "@/components/home/project-gallery";
@@ -38,6 +38,155 @@ function AboutAction() {
 
 function HeroAction() {
   return <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">Book a free strategy call</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedStroke className="hero-action-stroke" /></a>;
+}
+
+const caseStudyHeadline = "Explore how we combine strategic thinking, thoughtful design, and intelligent engineering to turn ambitious ideas into impactful digital products.";
+const caseStudyHeadlineCharacters = Array.from(caseStudyHeadline);
+
+function caseStudyRevealColor(progress: number) {
+  const from = progress < 0.45 ? [212, 212, 216] : [255, 75, 0];
+  const to = progress < 0.45 ? [255, 75, 0] : [11, 11, 11];
+  const amount = progress < 0.45 ? progress / 0.45 : (progress - 0.45) / 0.55;
+  const channels = from.map((channel, index) => Math.round(channel + (to[index] - channel) * amount));
+  return `rgb(${channels.join(" ")})`;
+}
+
+function CaseStudyHeading() {
+  const textRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const heading = textRef.current;
+    const textCharacters = heading?.querySelectorAll<HTMLElement>("[data-case-character]");
+    if (!heading || !textCharacters?.length) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let lastFrame = 0;
+    let currentProgress = reducedMotion.matches ? 1 : 0;
+    let targetProgress = currentProgress;
+
+    const renderProgress = (sectionProgress: number) => {
+      textCharacters.forEach((character, index) => {
+        const progress = Math.max(0, Math.min(1, sectionProgress * textCharacters.length - index));
+        character.style.color = caseStudyRevealColor(progress);
+        character.style.opacity = String(progress);
+      });
+    };
+
+    const animateReveal = (now: number) => {
+      const elapsed = lastFrame ? Math.min(now - lastFrame, 50) : 16;
+      lastFrame = now;
+      const smoothing = reducedMotion.matches ? 1 : 1 - Math.exp(-elapsed / 85);
+      currentProgress += (targetProgress - currentProgress) * smoothing;
+
+      if (Math.abs(targetProgress - currentProgress) < 0.001) {
+        currentProgress = targetProgress;
+        renderProgress(currentProgress);
+        frame = 0;
+        lastFrame = 0;
+        return;
+      }
+
+      renderProgress(currentProgress);
+      frame = window.requestAnimationFrame(animateReveal);
+    };
+
+    const updateProgress = () => {
+      const viewportHeight = window.innerHeight;
+      const sectionTop = heading.getBoundingClientRect().top;
+      const revealStart = viewportHeight * 0.85;
+      const revealRange = viewportHeight * 0.35;
+      const rawProgress = reducedMotion.matches
+        ? 1
+        : Math.max(0, Math.min(1, (revealStart - sectionTop) / revealRange));
+      targetProgress = rawProgress * rawProgress * (3 - 2 * rawProgress);
+      if (!frame) frame = window.requestAnimationFrame(animateReveal);
+    };
+
+    renderProgress(currentProgress);
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    reducedMotion.addEventListener("change", updateProgress);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+      reducedMotion.removeEventListener("change", updateProgress);
+    };
+  }, []);
+
+  return (
+    <h2 ref={textRef} aria-label={caseStudyHeadline}>
+      {caseStudyHeadlineCharacters.map((character, index) => (
+        <span aria-hidden="true" data-case-character key={`${character}-${index}`}>
+          {character}
+        </span>
+      ))}
+    </h2>
+  );
+}
+
+const caseStudies = [
+  {
+    category: "Product Design",
+    title: "SiteAssist - AI Powered Agents for Smarter Business Automation.",
+    tags: ["SiteAssist", "AI / SAAS"],
+    results: ["Intelligent AI-powered assistance", "Streamlined business workflows", "Enhanced customer support", "Secure, scalable AI integration"],
+    image: "fae0a.png",
+  },
+  {
+    category: "SaaS Platform",
+    title: "Taskflow - Smarter Task & Workflow Management.",
+    tags: ["Taskflow", "Productivity"],
+    results: ["Intuitive and user-friendly interface", "Streamlined task and project management", "Smarter task prioritization and organization", "Improved workflow visibility and productivity"],
+    image: "d0e6c.png",
+  },
+  {
+    category: "AI and Robotics",
+    title: "Matrix-3 - Next Generation Humanoid Robotics & AI.",
+    tags: ["Matrix 3", "Landing Page"],
+    results: ["Biomimetic Skin & Tactile Perception", "Vision Language Model Integration", "Natural Human Robot Overview", "Autonomous Physical Intelligence"],
+    image: "37090.png",
+  },
+];
+
+function CaseStudiesSection() {
+  return (
+    <section className="case-studies section-wrap" id="case-studies">
+      <div className="case-head">
+        <div className="case-intro">
+          <div className="case-eyebrow"><span aria-hidden="true" />Featured Case studies</div>
+          <CaseStudyHeading />
+        </div>
+        <ArrowButton>Show More</ArrowButton>
+      </div>
+      <div className="case-project-list">
+        {caseStudies.map((project) => (
+          <article className="case-card" key={project.title}>
+            <div className="case-visual">
+              <Image src={`/assets/case-studies/${project.image}`} alt={`${project.category} case study`} width={584} height={384} />
+            </div>
+            <div className="case-copy">
+              <div className="case-copy-top">
+                <div className="case-category"><span aria-hidden="true" />{project.category}</div>
+                <h3>{project.title}</h3>
+                <div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+              </div>
+              <div className="case-results">
+                <p className="results-label">Results</p>
+                <ul>{project.results.map((result) => <li key={result}>{result}</li>)}</ul>
+              </div>
+              <a className="case-explore" href="#contact">
+                <span>Explore Now</span><Image src="/assets/case-studies/1e04d.svg" alt="" width={24} height={24} />
+                <AnimatedStroke className="nav-button-stroke" />
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function Accordion({ items }: { items: string[] }) {
@@ -209,7 +358,7 @@ export function HomePage() {
       </div>
     </section>
 
-    <section className="case-studies section-wrap" id="case-studies"><div className="case-head"><div><span className="eyebrow">Featured Case studies</span><h2>Explore how we combine strategic thinking, thoughtful <span>design, and intelligent engineering to turn ambitious ideas into impactful digital products.</span></h2></div><ArrowButton>Show More</ArrowButton></div>{[["Product Design", "SiteAssist - AI Powered Agents for Smarter Business Automation.", "SiteAssist", "AI / SAAS", ["Intelligent AI-powered assistance", "Streamlined business workflows", "Enhanced customer support", "Secure, scalable AI integration"]], ["SaaS Platform", "Taskflow - Smarter Task & Workflow Management.", "Taskflow", "Productivity", ["Intuitive and user-friendly interface", "Streamlined task and project management", "Smarter task prioritization and organization", "Improved workflow visibility and productivity"]], ["AI and Robotics", "Matrix-3 - Next Generation Humanoid Robotics & AI.", "Matrix 3", "Landing Page", ["Biomimetic Skin & Tactile Perception", "Vision Language Model Integration", "Natural Human Robot Overview", "Autonomous Physical Intelligence"]]].map((c, i) => <article className="case-card" key={c[1] as string}><div className={`case-visual case-${i + 1}`}><Image src={`/assets/case-studies/${["fae0a.png","d0e6c.png","37090.png"][i]}`} alt={`${c[0]} case study`} width={584} height={450} /></div><div className="case-copy"><span className="eyebrow">{c[0] as string}</span><h3>{c[1] as string}</h3><div className="tags"><span>{c[2] as string}</span><span>{c[3] as string}</span></div><p className="results-label">Results</p><ul>{(c[4] as string[]).map((x) => <li key={x}>{x}</li>)}</ul><a href="#contact">Explore Now ↗</a></div></article>)}</section>
+    <CaseStudiesSection />
 
     <section className="why-section"><div className="section-wrap why-grid"><div className="why-sticky"><span className="eyebrow">Why Choose Us</span><h2>Thoughtful partners for ambitious ideas.</h2><p>We bring strategy, design, and engineering together to move your business forward.</p></div><div className="why-list">{why.map(([h, p], i) => <article key={h}><span>0{i + 1}</span><h3>{h}</h3><p>{p}</p></article>)}</div></div></section>
 
