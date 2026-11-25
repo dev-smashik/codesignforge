@@ -32,6 +32,10 @@ function ArrowButton({ children, light = false }: { children: React.ReactNode; l
   return <a className={`forge-button${light ? " forge-button-light" : ""}`} href="#contact"><span>{children}</span><span className="button-arrow" aria-hidden="true">↗</span><span className="button-arrow button-arrow-copy" aria-hidden="true">↗</span></a>;
 }
 
+function AboutAction() {
+  return <a className="forge-button about-action" href="#contact"><span>Know more about us</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="currentColor" /></svg></a>;
+}
+
 function HeroAction() {
   return <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">Book a free strategy call</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedStroke className="hero-action-stroke" /></a>;
 }
@@ -186,7 +190,24 @@ export function HomePage() {
 
     <section className="video-section"><h2>Intro Video</h2><button aria-label="Play introduction video" className="play-button">▶</button></section>
 
-    <section className="about-section" id="about"><div className="section-wrap about-grid"><div><span className="eyebrow">● About Us</span><h2>We don&apos;t just build digital products. We build what moves businesses forward.</h2><div className="about-small"><Image src="/assets/about/7989a.png" alt="Designer at a computer" width={480} height={440} /></div></div><div className="about-content"><div className="about-large"><Image src="/assets/about/66694.png" alt="Codesign Forge team at work" width={760} height={800} /></div><div className="about-body"><p>Great digital products go beyond beautiful interfaces. They solve real problems, create meaningful experiences, and help businesses grow.</p><p>At Codesign Forge, we bring strategy, creative design, and modern engineering together to turn ambitious ideas into exceptional digital products.</p><p>From SaaS platforms and web applications to AI-powered solutions, we focus on building technology that is intuitive, scalable, and designed for real world impact.</p><p>We believe great work comes from understanding the people behind every product, challenging conventional thinking, and paying attention to the details that make a difference.</p><p>Thoughtful by design. Intelligent by engineering. Built for what&apos;s next.</p><ArrowButton light>Know more about us</ArrowButton></div></div></div></section>
+    <section className="about-section" id="about" aria-labelledby="about-heading">
+      <div className="section-wrap about-grid">
+        <header className="about-heading">
+          <span className="about-category"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect width="12" height="12" fill="#DC532C" /></svg><span>About Us</span></span>
+          <h2 id="about-heading">We don&apos;t just build digital products. We build what moves businesses forward.</h2>
+        </header>
+        <div className="about-small"><Image src="/assets/about/7989a.png" alt="Designer at a computer" width={480} height={440} /></div>
+        <div className="about-body">
+          <p>Great digital products go beyond beautiful interfaces. They solve real problems, create meaningful experiences, and help businesses grow.</p>
+          <p>At Codesign Forge, we bring strategy, creative design, and modern engineering together to turn ambitious ideas into exceptional digital products.</p>
+          <p>From SaaS platforms and web applications to AI-powered solutions, we focus on building technology that is intuitive, scalable, and designed for real world impact.</p>
+          <p>We believe great work comes from understanding the people behind every product, challenging conventional thinking, and paying attention to the details that make a difference.</p>
+          <p>Thoughtful by design. Intelligent by engineering. Built for what&apos;s next.</p>
+          <AboutAction />
+        </div>
+        <div className="about-large"><Image src="/assets/about/66694.png" alt="Codesign Forge team at work" width={760} height={800} /></div>
+      </div>
+    </section>
 
     <section className="case-studies section-wrap" id="case-studies"><div className="case-head"><div><span className="eyebrow">Featured Case studies</span><h2>Explore how we combine strategic thinking, thoughtful <span>design, and intelligent engineering to turn ambitious ideas into impactful digital products.</span></h2></div><ArrowButton>Show More</ArrowButton></div>{[["Product Design", "SiteAssist - AI Powered Agents for Smarter Business Automation.", "SiteAssist", "AI / SAAS", ["Intelligent AI-powered assistance", "Streamlined business workflows", "Enhanced customer support", "Secure, scalable AI integration"]], ["SaaS Platform", "Taskflow - Smarter Task & Workflow Management.", "Taskflow", "Productivity", ["Intuitive and user-friendly interface", "Streamlined task and project management", "Smarter task prioritization and organization", "Improved workflow visibility and productivity"]], ["AI and Robotics", "Matrix-3 - Next Generation Humanoid Robotics & AI.", "Matrix 3", "Landing Page", ["Biomimetic Skin & Tactile Perception", "Vision Language Model Integration", "Natural Human Robot Overview", "Autonomous Physical Intelligence"]]].map((c, i) => <article className="case-card" key={c[1] as string}><div className={`case-visual case-${i + 1}`}><Image src={`/assets/case-studies/${["fae0a.png","d0e6c.png","37090.png"][i]}`} alt={`${c[0]} case study`} width={584} height={450} /></div><div className="case-copy"><span className="eyebrow">{c[0] as string}</span><h3>{c[1] as string}</h3><div className="tags"><span>{c[2] as string}</span><span>{c[3] as string}</span></div><p className="results-label">Results</p><ul>{(c[4] as string[]).map((x) => <li key={x}>{x}</li>)}</ul><a href="#contact">Explore Now ↗</a></div></article>)}</section>
 
