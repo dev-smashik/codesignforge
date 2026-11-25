@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { AnimatedStroke } from "@/components/home/animated-stroke";
 import { ProjectGallery } from "@/components/home/project-gallery";
+import { IntroSection } from "@/components/home/intro-section";
 
 const services = [
   { title: "UI/UX & Product Design", description: "We transform complex ideas into intuitive, user centered digital experiences. From product strategy and UX research to interface design and design systems, we create products that users love and businesses grow with.", bullets: ["Research and discovery", "Interface design", "UX flows and prototypes", "Design systems"] },
@@ -110,7 +111,7 @@ export function HomePage() {
       </div>
     </section>
 
-    <section className="intro section-wrap"><span className="eyebrow">The Codesign Forge</span><div><p className="intro-copy">We are a digital product design and engineering partner helping startups, scaleups, and enterprises build meaningful digital experiences through human centered design, modern technology, and AI powered innovation.</p><div className="stats"><div><strong>Since 2026</strong><span>Founded</span></div><div><strong>10+</strong><span>Product Launched</span></div><div><strong>6+</strong><span>Countries our clients ship from</span></div></div><a className="text-link" href="#about">About Codesign Forge ↗</a></div></section>
+    <IntroSection />
 
     <section className="portfolio" id="projects"><div className="section-heading"><h2>Turning Ambitious Ideas Into Digital Excellence.</h2><p>Everything between an idea and a product people<br /> trust. Designed, built, launched and branded.</p></div><div className="portfolio-stage"><div className="orbit" /><article className="portfolio-card portfolio-left"><Image src="/assets/portfolio/68cf5.png" alt="Artificial intelligence sports betting product" width={920} height={993} /><span>View Product ↗</span></article><article className="portfolio-card portfolio-center"><Image src="/assets/portfolio/36f20.png" alt="Screen Skinz product design" width={600} height={800} /><span>View Product ↗</span></article><article className="portfolio-card portfolio-right"><Image src="/assets/portfolio/96212.png" alt="OneBasket digital product" width={920} height={993} /><span>View Product ↗</span></article></div><ArrowButton>Show More Projects</ArrowButton></section>
 
