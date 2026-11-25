@@ -6,6 +6,7 @@ import { HomeNavbar } from "@/components/home/home-navbar";
 import { AnimatedStroke } from "@/components/home/animated-stroke";
 import { ProjectGallery } from "@/components/home/project-gallery";
 import { IntroSection } from "@/components/home/intro-section";
+import { PortfolioOrbit } from "@/components/home/portfolio-orbit";
 
 const services = [
   { title: "UI/UX & Product Design", description: "We transform complex ideas into intuitive, user centered digital experiences. From product strategy and UX research to interface design and design systems, we create products that users love and businesses grow with.", bullets: ["Research and discovery", "Interface design", "UX flows and prototypes", "Design systems"] },
@@ -113,7 +114,7 @@ export function HomePage() {
 
     <IntroSection />
 
-    <section className="portfolio" id="projects"><div className="section-heading"><h2>Turning Ambitious Ideas Into Digital Excellence.</h2><p>Everything between an idea and a product people<br /> trust. Designed, built, launched and branded.</p></div><div className="portfolio-stage"><div className="orbit" /><article className="portfolio-card portfolio-left"><Image src="/assets/portfolio/68cf5.png" alt="Artificial intelligence sports betting product" width={920} height={993} /><span>View Product ↗</span></article><article className="portfolio-card portfolio-center"><Image src="/assets/portfolio/36f20.png" alt="Screen Skinz product design" width={600} height={800} /><span>View Product ↗</span></article><article className="portfolio-card portfolio-right"><Image src="/assets/portfolio/96212.png" alt="OneBasket digital product" width={920} height={993} /><span>View Product ↗</span></article></div><ArrowButton>Show More Projects</ArrowButton></section>
+    <PortfolioOrbit />
 
     <section className="services-section" id="services"><div className="services-top section-wrap"><div className="service-intro"><h2>What we do</h2><p>A glimpse into our creative journey projects that make us proud</p><div className="service-image"><Image src="/assets/services/36f20.png" alt="Screen Skinz design project" width={960} height={1110} /></div></div><Accordion items={services} /></div><div className="process section-wrap"><div className="process-title"><h2>How a project runs</h2><p>Twelve weeks from kickoff to launch for most products, with a fixed quote after week two.</p></div><div className="process-steps">{[["Weeks 1 - 2", "Discover", "Workshops, interviews and a teardown of what you have. You get a written plan and a fixed quote."], ["Weeks 3 - 6", "Design", "Flows first, then the interface, in weekly reviews. Every screen comes from one shared design system."], ["Weeks 6-12", "Build", "Production code from week six, on a staging link you can open every Friday."], ["Weeks 12 and on", "Launch and stay", "We launch with you, watch the numbers and stay on a monthly retainer if you want us to."]].map((s) => <article key={s[1]}><span>{s[0]}</span><h3>{s[1]}</h3><p>{s[2]}</p></article>)}</div></div></section>
 
