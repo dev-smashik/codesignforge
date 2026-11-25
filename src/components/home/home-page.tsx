@@ -189,6 +189,99 @@ function CaseStudiesSection() {
   );
 }
 
+const whyCardColors = ["#BAE5FF", "#E1FFB9", "#FFCD51", "#FFB4B3", "#BEB3FF", "#FFE4B3"];
+
+function WhyIcon({ index, color }: { index: number; color: string }) {
+  const common = { fill: "none", stroke: color, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, strokeWidth: 1.5 };
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" {...common}>
+      {index === 0 && <><path d="M9 18h6m-5 3h4m-5.5-6.2A7 7 0 1 1 15.5 15c-.7.6-1.2 1.4-1.4 2.2H9.9c-.2-.8-.7-1.6-1.4-2.4Z"/><path d="M10 8a2.5 2.5 0 0 1 3.5-1.2"/></>}
+      {index === 1 && <><path d="M12 3v18M3 12h18"/><circle cx="6" cy="17" r="2"/><path d="m17 4 3 3m0-3-3 3"/></>}
+      {index === 2 && <><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 12 19 5m-4 0h4v4"/></>}
+      {index === 3 && <><path d="M5 4v6h6M19 20v-6h-6M5 10l5-5m9 9-5 5"/><path d="M14 4h5v5M5 15v5h5"/></>}
+      {index === 4 && <><path d="M12 3v5m0 8v5M3 12h5m8 0h5M6 6l3 3m6 6 3 3M18 6l-3 3m-6 6-3 3"/><circle cx="12" cy="12" r="3"/></>}
+      {index === 5 && <><path d="M4 17 10 11l4 3 6-7"/><path d="M14 7h6v6"/></>}
+    </svg>
+  );
+}
+
+function WhyChooseUsSection() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const cardsViewportRef = useRef<HTMLDivElement>(null);
+  const cardsTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const cardsViewport = cardsViewportRef.current;
+    const cardsTrack = cardsTrackRef.current;
+    if (!stage || !cardsViewport || !cardsTrack) return;
+
+    const mobile = window.matchMedia("(max-width: 760px)");
+    let frame = 0;
+
+    const updateTrackPosition = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        if (mobile.matches) {
+          cardsTrack.style.transform = "";
+          return;
+        }
+
+        const maxDistance = Math.max(0, cardsTrack.scrollHeight - cardsViewport.clientHeight);
+        const stageScrollDistance = Math.max(1, stage.offsetHeight - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, -stage.getBoundingClientRect().top / stageScrollDistance));
+        cardsTrack.style.transform = `translate3d(0, ${-maxDistance * progress}px, 0)`;
+      });
+    };
+
+    updateTrackPosition();
+    window.addEventListener("scroll", updateTrackPosition, { passive: true });
+    window.addEventListener("resize", updateTrackPosition);
+    mobile.addEventListener("change", updateTrackPosition);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateTrackPosition);
+      window.removeEventListener("resize", updateTrackPosition);
+      mobile.removeEventListener("change", updateTrackPosition);
+    };
+  }, []);
+
+  return (
+    <div className="why-scroll-stage" ref={stageRef}>
+      <section className="why-section" id="why-choose-us">
+        <div className="why-layout">
+          <div className="why-content">
+            <div className="why-copy">
+              <div className="why-label"><span aria-hidden="true" />Why Choose Us</div>
+              <h2>More Than a Service Provider. A Partner in Your Product&apos;s Success.</h2>
+              <p>Strategy, creativity, and engineering working together to build products that matter.</p>
+            </div>
+            <a className="why-action" href="#contact">
+              <span>Start a Project</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="currentColor" /></svg>
+            </a>
+          </div>
+          <div className="why-cards" ref={cardsViewportRef} role="region" aria-label="Why choose Codesign Forge" tabIndex={0}>
+            <div className="why-cards-track" ref={cardsTrackRef}>
+              {why.map(([title, description], index) => (
+                <article className="why-feature" style={{ backgroundColor: whyCardColors[index] }} key={title}>
+                  <div className="why-feature-content">
+                    <div className="why-feature-icon"><WhyIcon index={index} color={whyCardColors[index]} /></div>
+                    <div className="why-feature-text">
+                      <h3>{title}</h3>
+                      <p>{description}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function Accordion({ items }: { items: string[] }) {
   const [active, setActive] = useState(0);
   return <div className="faq-list">{items.map((title, i) => {
@@ -360,7 +453,7 @@ export function HomePage() {
 
     <CaseStudiesSection />
 
-    <section className="why-section"><div className="section-wrap why-grid"><div className="why-sticky"><span className="eyebrow">Why Choose Us</span><h2>Thoughtful partners for ambitious ideas.</h2><p>We bring strategy, design, and engineering together to move your business forward.</p></div><div className="why-list">{why.map(([h, p], i) => <article key={h}><span>0{i + 1}</span><h3>{h}</h3><p>{p}</p></article>)}</div></div></section>
+    <WhyChooseUsSection />
 
     <section className="testimonials"><div className="section-wrap"><div className="testimonial-header"><h2>Building Trust Through Every Partnership</h2><div><button aria-label="Previous testimonial" onClick={()=>testimonialTrack.current?.scrollBy({left:-416,behavior:"smooth"})}>←</button><button aria-label="Next testimonial" onClick={()=>testimonialTrack.current?.scrollBy({left:416,behavior:"smooth"})}>→</button></div></div><div className="testimonial-track" ref={testimonialTrack}><article className="rating-card"><strong>4.8</strong><span>★★★★★</span><p>Over 10+ Reviews</p><small>fiverr　upwork　99designs　freelancer</small></article>{[["Working with Codesign Forge was smooth and efficient. They understood our vision and delivered exactly what we needed.", "Rohidul Islam", "Software Engineer", "siteassist", "c39de.png"], ["Codesign Forge delivered an excellent experience with seamless communication, thoughtful collaboration, and outstanding attention to detail.", "RaShaunBrown", "Co-Founder", "codesign", "510e2.png"], ["They quickly understood our requirements and turned our ideas into a practical solution. Highly recommended!", "Arbaz Khan", "Founder", "Khantrast", "50690.png"], ["From the initial discussion to final delivery, everything was handled professionally. Looking forward to working together again.", "Piotr Czernik", "Founder", "spawndrop", "46a9a.png"]].map((t) => <article className="quote-card" key={t[1]}><b>{t[3]}</b><p>“{t[0]}”</p><footer><Image src={`/assets/testimonials/${t[4]}`} alt="" width={48} height={48}/><span><strong>{t[1]}</strong><small>{t[2]}</small></span></footer></article>)}</div></div></section>
 
