@@ -1,69 +1,101 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
-type CardKind = "wide" | "square" | "featured";
-type ProjectCard = { src: string; alt: string; kind: CardKind };
-
-const firstGallery: ProjectCard[] = [
-  { src: "/assets/hero/f2d5e.png", alt: "Healthcare app design", kind: "wide" },
-  { src: "/assets/hero/717a5.png", alt: "Online shopping product design", kind: "square" },
-  { src: "/assets/hero/f8af1.png", alt: "Humanoid robotics website design", kind: "wide" },
-  { src: "/assets/hero/6f7bf.png", alt: "Mobile finance app design", kind: "square" },
-  { src: "/assets/hero/eae1d.png", alt: "Featured promotional website project", kind: "featured" },
-  { src: "/assets/hero/11c8e.png", alt: "Wellness mobile app design", kind: "square" },
-  { src: "/assets/hero/f2d5e.png", alt: "Healthcare app design", kind: "wide" },
+const cardCount = 10;
+const step = 360 / cardCount;
+const projects = [
+  { src: "/assets/hero/f2d5e.png", alt: "Healthcare app design" },
+  { src: "/assets/hero/717a5.png", alt: "Online shopping product design" },
+  { src: "/assets/hero/f8af1.png", alt: "Robotics website design" },
+  { src: "/assets/hero/6f7bf.png", alt: "Mobile finance app design" },
+  { src: "/assets/hero/eae1d.png", alt: "Featured digital product design" },
+  { src: "/assets/hero/11c8e.png", alt: "Wellness mobile app design" },
 ];
-
-const secondGallery: ProjectCard[] = [
-  { src: "/assets/hero/f8af1.png", alt: "Humanoid robotics website design", kind: "wide" },
-  { src: "/assets/hero/6f7bf.png", alt: "Mobile finance app design", kind: "square" },
-  { src: "/assets/hero/eae1d.png", alt: "Featured promotional website project", kind: "featured" },
-  { src: "/assets/hero/f2d5e.png", alt: "Healthcare app design", kind: "wide" },
-  { src: "/assets/hero/717a5.png", alt: "Online shopping product design", kind: "square" },
-  { src: "/assets/hero/11c8e.png", alt: "Wellness mobile app design", kind: "wide" },
-  { src: "/assets/hero/6f7bf.png", alt: "Mobile finance app design", kind: "square" },
-];
-
-function FeaturedProject({ src }: { src: string }) {
-  return (
-    <div className="project-featured-art">
-      <div className="project-featured-glow project-featured-glow-one" />
-      <div className="project-featured-glow project-featured-glow-two" />
-      <Image className="project-featured-image" src={src} alt="" fill sizes="320px" />
-      <div className="project-featured-scrim" />
-      <div className="project-featured-metadata"><span className="project-featured-brand"><i>✦</i> MEGABiT</span><span className="project-featured-screen-count">17 Screens</span></div>
-      <div className="project-featured-tagline"><b>We Design</b><b>&amp; Build</b><strong>Digital Website!</strong><div><span>UI/UX Design</span><span>Web Design</span></div></div>
-      <div className="project-featured-attributes"><span>✦&nbsp; Modern Design</span><span>✦&nbsp; Promotional Website</span></div>
-    </div>
-  );
-}
-
-function ProjectPreview({ card, duplicate }: { card: ProjectCard; duplicate: boolean }) {
-  return (
-    <article className={`project-preview project-preview-${card.kind}`}>
-      {card.kind === "featured" ? <FeaturedProject src={card.src} /> : <Image src={card.src} alt={duplicate ? "" : card.alt} fill sizes={card.kind === "wide" ? "320px" : "224px"} />}
-    </article>
-  );
-}
-
-function GalleryTrack({ cards, direction, label }: { cards: ProjectCard[]; direction: "left" | "right"; label: string }) {
-  return (
-    <div className={`project-gallery-lane project-gallery-lane-${direction}`} role="group" aria-label={label}>
-      <div className="project-gallery-track">
-        {[0, 1].map((copy) => (
-          <div className="project-gallery-set" key={copy} aria-hidden={copy === 1}>
-            {cards.map((card, index) => <ProjectPreview key={`${card.kind}-${index}`} card={card} duplicate={copy === 1} />)}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export function ProjectGallery() {
+  const ringRef = useRef<HTMLDivElement>(null);
+  const dragX = useRef<number | null>(null);
+  const isDragging = useRef(false);
+  const rotation = useRef(180);
+
+  useEffect(() => {
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motionPreference.matches) return;
+
+    let frame = 0;
+    let lastFrame = 0;
+    const animate = (now: number) => {
+      if (lastFrame && !isDragging.current && ringRef.current) {
+        const elapsed = Math.min(now - lastFrame, 50);
+        rotation.current -= elapsed * 0.01;
+        ringRef.current.style.setProperty("--ring-rotation", `${rotation.current}deg`);
+      }
+      lastFrame = now;
+      frame = window.requestAnimationFrame(animate);
+    };
+
+    frame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    isDragging.current = true;
+    dragX.current = event.clientX;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.classList.add("is-dragging");
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragX.current === null || !ringRef.current) return;
+
+    const delta = event.clientX - dragX.current;
+    rotation.current -= delta * 0.24;
+    dragX.current = event.clientX;
+    ringRef.current.style.setProperty("--ring-rotation", `${rotation.current}deg`);
+
+    ringRef.current.querySelectorAll<HTMLElement>(".hero-ring-card").forEach((card, index) => {
+      const angle = ((rotation.current - 180 - index * step) % 360 + 360) % 360;
+      card.style.setProperty("--card-parallax", `${(-angle / 360) * 400}px`);
+    });
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    dragX.current = null;
+    isDragging.current = false;
+    event.currentTarget.classList.remove("is-dragging");
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
   return (
-    <section className="project-gallery" aria-label="Selected CoDesign Forge projects">
-      <GalleryTrack cards={firstGallery} direction="left" label="Project gallery one, moving right to left" />
-      <GalleryTrack cards={secondGallery} direction="right" label="Project gallery two, moving left to right" />
+    <section className="hero-ring-showcase" aria-label="Interactive 3D project showcase">
+      <div
+        className="hero-ring-drag-surface"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+      >
+        <div className="hero-ring" ref={ringRef}>
+          {Array.from({ length: cardCount }, (_, index) => {
+            const project = projects[index % projects.length];
+            return (
+              <article
+                aria-hidden="true"
+                className={`hero-ring-card hero-ring-card-${index % 5}`}
+                key={index}
+                style={{ "--card-index": index } as React.CSSProperties}
+              >
+                <Image src={project.src} alt={project.alt} fill sizes="(max-width: 760px) 190px, (max-width: 1100px) 32vw, 33vw" />
+              </article>
+            );
+          })}
+        </div>
+      </div>
+      <span className="sr-only">Drag horizontally to rotate the project showcase cards.</span>
     </section>
   );
 }

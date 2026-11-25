@@ -80,51 +80,23 @@ input {
 
 .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
 
-/* Figma project gallery cards with uninterrupted, opposing marquee tracks. */
-.project-gallery { position:absolute;z-index:1;top:650px;left:0;width:100%;height:456px;overflow:hidden;isolation:isolate;pointer-events:none; }
-.project-gallery-lane { position:relative;width:1925px;height:224px;margin-left:calc(50% - 962.5px);overflow:hidden;pointer-events:auto; }
-.project-gallery-lane + .project-gallery-lane { margin-top:8px; }
-.project-gallery-track,.project-gallery-set { display:flex;width:max-content;height:224px;align-items:center; }
-.project-gallery-track { animation:project-gallery-move-left 38s linear infinite;will-change:transform; }
-.project-gallery-lane-right .project-gallery-track { animation-name:project-gallery-move-right;animation-duration:42s; }
-.project-gallery-set { gap:8px;padding-right:8px; }
-.project-preview { position:relative;flex:none;height:224px;overflow:hidden;border-radius:16px;background:#fff; }
-.project-preview-wide,.project-preview-featured { width:320px; }
-.project-preview-square { width:224px; }
-.project-preview>img { display:block;object-fit:cover; }
-.project-featured-art { position:absolute;inset:0;overflow:hidden;background:linear-gradient(40deg,#312276,#7542a7 54%,#111947); }
-.project-featured-image { top:29px!important;width:100%!important;height:calc(100% - 8px)!important;object-fit:cover; }
-.project-featured-scrim { position:absolute;inset:29px 0 0;background:linear-gradient(87deg,rgba(24,8,58,.1) 24%,rgba(0,0,0,.25) 67%,#050505 100%);pointer-events:none; }
-.project-featured-glow { position:absolute;z-index:1;border-radius:50%;background:#9c6cff;filter:blur(20px);opacity:.9;pointer-events:none; }
-.project-featured-glow-one { top:-30px;left:-35px;width:230px;height:90px;transform:rotate(-24deg); }
-.project-featured-glow-two { right:-36px;bottom:-52px;width:190px;height:80px;background:#6534d8; }
-.project-featured-metadata { position:absolute;z-index:2;top:10px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;color:#fff;font:500 8px/1 var(--font-inter-tight),sans-serif; }
-.project-featured-brand { display:flex;align-items:center;gap:4px;font-weight:700;letter-spacing:.04em; }.project-featured-brand i { font-style:normal;font-size:12px; }
-.project-featured-screen-count { padding:4px 7px;border:1px solid #ffffff55;border-radius:99px;background:#ffffff18; }
-.project-featured-tagline { position:absolute;z-index:2;top:57px;right:8px;width:128px;color:#fff;font:700 16px/1.05 var(--font-inter-tight),sans-serif;letter-spacing:-.04em; }
-.project-featured-tagline>b,.project-featured-tagline>strong { display:block; }.project-featured-tagline>b:first-child { color:#f5ffd7; }.project-featured-tagline>strong { color:#ba91ff;font-weight:800; }
-.project-featured-tagline>div { display:flex;gap:4px;margin-top:5px; }.project-featured-tagline>div span { padding:3px 5px;border-radius:99px;background:#ffffff30;color:#fff;font:500 6px/1 var(--font-inter-tight),sans-serif;letter-spacing:.04em;text-transform:uppercase; }
-.project-featured-attributes { position:absolute;z-index:2;left:54px;bottom:0;display:flex;max-width:224px;flex-wrap:wrap;gap:3px;padding:5px;border:1px solid #8f69ef;border-bottom:0;border-radius:4px 4px 0 0;background:#101c3e66;color:#fff;font:500 6px/1 var(--font-inter-tight),sans-serif; }
-.project-featured-attributes span { padding:3px 5px;border:1px solid #ffffff42;border-radius:3px;background:#64748b4d; }
-@keyframes project-gallery-move-left { from { transform:translateX(0); } to { transform:translateX(-50%); } }
-@keyframes project-gallery-move-right { from { transform:translateX(-50%); } to { transform:translateX(0); } }
-@media(max-width:760px) {
-  .project-gallery { top:545px;height:288px; }
-  .project-gallery-lane { width:1925px;height:140px;margin-left:0; }
-  .project-gallery-lane + .project-gallery-lane { margin-top:8px; }
-  .project-gallery-track,.project-gallery-set { height:140px; }
-  .project-gallery-set { gap:8px;padding-right:8px; }
-  .project-preview { height:140px;border-radius:12px; }
-  .project-preview-wide,.project-preview-featured { width:200px; }
-  .project-preview-square { width:140px; }
-  .project-gallery-track { animation-duration:32s; }
-  .project-gallery-lane-right .project-gallery-track { animation-duration:36s; }
-  .project-featured-tagline { top:38px;right:6px;width:88px;font-size:11px; }
-  .project-featured-tagline>div { gap:3px;margin-top:4px; }
-  .project-featured-tagline>div span { padding:2px 3px;font-size:4px; }
-  .project-featured-attributes { left:28px;max-width:140px;font-size:5px; }
-}
-@media(prefers-reduced-motion:reduce) { .project-gallery-track,.project-gallery-lane-right .project-gallery-track { animation:none;transform:translateX(0); } }
+/* Drag-rotated 3D ring for the hero project showcase. */
+.hero-ring-showcase { --ring-radius:50vw;--ring-card-width:calc(32.45vw - 17px);position:absolute;z-index:1;top:620px;left:0;width:100%;height:480px;overflow:hidden;perspective:200vw;perspective-origin:50% 45%; }
+.hero-ring-drag-surface { position:absolute;inset:0;transform-style:preserve-3d;touch-action:pan-y;cursor:grab; }
+.hero-ring-drag-surface.is-dragging { cursor:grabbing; }
+.hero-ring { position:absolute;inset:0;transform:rotateY(var(--ring-rotation,180deg));transform-style:preserve-3d;will-change:transform; }
+.hero-ring-card { position:absolute;top:50%;left:calc(50% - var(--ring-card-width)/2);width:var(--ring-card-width);aspect-ratio:10/7;margin-top:calc(var(--ring-card-width)*-.35);overflow:hidden;border:1px solid #ffffff50;border-radius:16px;backface-visibility:hidden;transform-origin:50% 50% var(--ring-radius);transform:translateZ(calc(0px - var(--ring-radius))) rotateY(calc(var(--card-index) * -36deg));background:linear-gradient(145deg,#181818,#090909 64%,#30140f);box-shadow:0 20px 70px #0008,inset 0 1px #ffffff16; }
+.hero-ring-card>img { position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%; }
+.hero-ring-card::before,.hero-ring-card::after { position:absolute;content:"";pointer-events:none; }
+.hero-ring-card::before { z-index:1;inset:0;background:radial-gradient(ellipse at 50% 100%,#d94c2566,transparent 56%),linear-gradient(115deg,#ffffff08,transparent 42%);transform:translateX(var(--card-parallax,0)); }
+.hero-ring-card::after { z-index:2;inset:12px;border:1px solid #ffffff0b;border-radius:10px; }
+.hero-ring-card-1 { background:linear-gradient(145deg,#13121d,#08090d 64%,#20172a); }
+.hero-ring-card-2 { background:linear-gradient(145deg,#171713,#0b0b09 64%,#292615); }
+.hero-ring-card-3 { background:linear-gradient(145deg,#15181b,#080a0c 64%,#122326); }
+.hero-ring-card-4 { background:linear-gradient(145deg,#1b1515,#0b0909 64%,#2b1710); }
+@media(max-width:1100px) { .hero-ring-showcase { --ring-radius:50vw;--ring-card-width:calc(32.45vw - 17px);top:650px;perspective:200vw; }.hero-ring-card { border-radius:14px; } }
+@media(max-width:760px) { .hero-ring-showcase { --ring-radius:300px;--ring-card-width:190px;top:555px;height:360px;perspective:1100px;perspective-origin:50% 40%; }.hero-ring-card { border-radius:12px; }.hero-ring-card::after { inset:8px;border-radius:8px; } }
+@media(prefers-reduced-motion:reduce) { .hero-ring,.hero-ring-card { scroll-behavior:auto; } }
 
 /* Figma-matched artwork and section geometry */
 .hero-glow { inset:auto;top:-1256px;left:50%;width:2153px;height:3022px;transform:translateX(-50%);background:url('/assets/hero/ade9e.svg') center/2653px 3372px no-repeat;filter:none;animation:glow-drift 24s ease-in-out infinite alternate; }
@@ -219,7 +191,6 @@ input {
 .role-pointer { top:-30px;height:32px; }
 .role-left .role-pointer { right:-22px;transform:rotate(180deg); }
 .role-right .role-pointer { top:-32px;left:-23px; }
-.home-hero .hero-gallery { top:650px; }
 .home-hero { height:1108px; }
 .home-hero .role-left { top:467px;left:clamp(24px,18.75vw,360px);width:176px;height:64px;padding:0;background:transparent;box-shadow:none;animation:rolebadge-float 1.8s ease-in-out infinite; }
 .home-hero .role-left .role-pointer { top:0;left:152px;right:auto;width:39px;height:42px;transform:none; }
@@ -237,7 +208,7 @@ input {
   .home-hero .hero-details p { font-size:15px;line-height:1.5; }
   .home-page a.forge-button.hero-action { max-width:100%;font-size:14px; }
   .home-hero { height:940px; }
-  .project-gallery { top:545px;height:288px; }
+  .hero-ring-showcase { top:555px;height:360px; }
 }
 .giant-wordmark { padding:18px max(24px,calc((100% - 1280px)/2)) 24px; }
 .giant-wordmark img { display:block;width:100%;height:auto; }
