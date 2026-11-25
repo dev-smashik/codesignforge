@@ -102,7 +102,7 @@ input {
 .hero-glow { inset:auto;top:-1256px;left:50%;width:2153px;height:3022px;transform:translateX(-50%);background:url('/assets/hero/ade9e.svg') center/2653px 3372px no-repeat;filter:none;animation:glow-drift 24s ease-in-out infinite alternate; }
 .hero-copy h1 { width:1320px;max-width:calc(100vw - 48px);font-family:var(--font-inter-tight),sans-serif;font-weight:400;letter-spacing:-1.28px;transform:scaleX(.94); }
 .hero-copy h1 em { font-family:var(--font-playfair),Georgia,serif; font-style:italic; font-weight:500; }
-.trusted { min-height:0;border-bottom:1px solid #e5e5e5;padding:24px 80px;text-align:center;color:#0b0b0b; }
+.trusted { min-height:0;border-bottom:1px solid #e5e5e5;padding:100px 80px;text-align:center;color:#0b0b0b; }
 .trusted-container { display:flex;width:min(1280px,100%);max-width:1300px;margin:0 auto;flex-direction:column;align-items:center;gap:24px; }
 .trusted-container>p { margin:0;font:500 16px/24px var(--font-inter-tight),sans-serif; }
 .trusted-logos { display:flex;width:100%;min-height:0;margin:0;padding:20px 0;align-items:center;justify-content:space-between;gap:16px;color:#0b0b0b; }
@@ -213,7 +213,7 @@ input {
 .giant-wordmark { padding:18px max(24px,calc((100% - 1280px)/2)) 24px; }
 .giant-wordmark img { display:block;width:100%;height:auto; }
 @media(max-width:1100px) { .portfolio-left { left:calc(50% - 760px); }.portfolio-right { left:calc(50% + 160px); }.about-grid { grid-template-columns:180px minmax(0,1fr) 280px;gap:50px 22px; }.about-small { width:180px;height:170px; }.about-large { width:280px;height:320px; }.case-card { grid-template-columns:1fr 1fr; }.case-visual { width:100%; }.cta-card { width:300px;height:220px; } }
-@media(max-width:760px) { .trusted { padding-block:42px; }.trusted-logos { min-height:0; }.trusted-logos>img { max-width:140px;height:34px; }.trusted-logos>div { justify-content:center; }.portfolio-stage { height:700px;margin-top:40px; }.orbit { width:1000px;height:350px;top:220px; }.portfolio-card { width:270px;height:380px; }.portfolio-center { top:0; }.portfolio-left { left:calc(50% - 450px);top:190px; }.portfolio-right { left:calc(50% + 180px);top:150px; }.portfolio>.forge-button { margin-top:10px; }.about-grid { display:block; }.about-grid>div:first-child,.about-content { display:block; }.about-grid h2 { margin-top:20px; }.about-small { display:none; }.about-content { margin-top:30px; }.about-large { width:100%;height:360px;margin-bottom:25px; }.about-body { margin:0; }.case-card { display:block; }.case-visual { width:100%; }.testimonial-header { align-items:flex-start; }.testimonial-header>div { flex-shrink:0; }.cta-card { width:190px;height:135px; }.cta-1 { top:0;left:-40px; }.cta-2 { top:0;right:-40px; }.cta-3 { top:140px;left:-110px; }.cta-4 { top:140px;right:-110px; }.cta-5 { bottom:5px;left:-40px; }.cta-6 { bottom:5px;right:-40px; }.cta-7,.cta-8 { display:none; } }
+@media(max-width:760px) { .trusted { padding-block:100px; }.trusted-logos { min-height:0; }.trusted-logos>img { max-width:140px;height:34px; }.trusted-logos>div { justify-content:center; }.portfolio-stage { height:700px;margin-top:40px; }.orbit { width:1000px;height:350px;top:220px; }.portfolio-card { width:270px;height:380px; }.portfolio-center { top:0; }.portfolio-left { left:calc(50% - 450px);top:190px; }.portfolio-right { left:calc(50% + 180px);top:150px; }.portfolio>.forge-button { margin-top:10px; }.about-grid { display:block; }.about-grid>div:first-child,.about-content { display:block; }.about-grid h2 { margin-top:20px; }.about-small { display:none; }.about-content { margin-top:30px; }.about-large { width:100%;height:360px;margin-bottom:25px; }.about-body { margin:0; }.case-card { display:block; }.case-visual { width:100%; }.testimonial-header { align-items:flex-start; }.testimonial-header>div { flex-shrink:0; }.cta-card { width:190px;height:135px; }.cta-1 { top:0;left:-40px; }.cta-2 { top:0;right:-40px; }.cta-3 { top:140px;left:-110px; }.cta-4 { top:140px;right:-110px; }.cta-5 { bottom:5px;left:-40px; }.cta-6 { bottom:5px;right:-40px; }.cta-7,.cta-8 { display:none; } }
 
 /* Figma navbar versions: full navigation at page top, compact floating navigation after scroll. */
 .home-nav-shell { position:fixed;z-index:20;top:24px;left:0;width:100%;pointer-events:none; }
@@ -281,7 +281,7 @@ input {
 
 @media(max-width:1100px) { .trusted { padding-inline:40px; }.trusted-logos { justify-content:center;flex-wrap:wrap;gap:24px 42px; } }
 @media(max-width:760px) {
-  .trusted { padding:24px 18px; }
+  .trusted { padding:100px 18px; }
   .trusted-container { gap:16px; }
   .trusted-logos { justify-content:center;flex-wrap:wrap;gap:16px 24px;padding-block:16px; }
   .trusted-logos>img { height:32px; }
