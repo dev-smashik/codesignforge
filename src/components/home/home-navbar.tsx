@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { AnimatedStroke } from "@/components/home/animated-stroke";
+import { AnimatedLightStroke } from "@/components/home/animated-light-stroke";
 
 const links = [
   ["Services", "#services"],
@@ -19,7 +19,7 @@ function TalkButton() {
       href="#contact"
     >
       <span>Let’s Talk</span>
-      <AnimatedStroke className="nav-button-stroke" />
+      <AnimatedLightStroke />
       <Image src="/assets/case-studies/1e04d.svg" alt="" width={24} height={24} />
     </a>
   );

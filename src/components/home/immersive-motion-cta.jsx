@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
-import { AnimatedStroke } from "./animated-stroke";
+import { AnimatedLightStroke } from "./animated-light-stroke";
 
 const CSS = `
 .im-export{width:100%;height:100vh;height:100dvh}
@@ -372,7 +372,7 @@ function createImmersiveMotion(root, initial) {
             <div className="cta-center im-title">
               <h2 className="cta-heading">Get a Dedicated SaaS Design &amp; Development Team Without the Cost of Hiring In House.</h2>
               <p>We bring designers and engineers together to design, build, and launch exceptional SaaS products faster and more efficiently.</p>
-              <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">See pricing &amp; availability</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedStroke className="hero-action-stroke" /></a>
+              <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">See pricing &amp; availability</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedLightStroke /></a>
               <div className="social-line"><span className="social-label">We are available on socials</span><span className="social-icons">{[["61f43.svg", "Dribbble"], ["98f84.svg", "Instagram"], ["f5ae5.svg", "X"], ["ce7cf.svg", "LinkedIn"]].map(([src, label]) => <a href="#more" aria-label={label} key={label}><img src={`/assets/cta/${src}`} alt="" width="24" height="24" /></a>)}</span></div>
             </div>
           </div>

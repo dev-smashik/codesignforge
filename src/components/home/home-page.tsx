@@ -3,11 +3,12 @@
 import Image from "next/image";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { HomeNavbar } from "@/components/home/home-navbar";
-import { AnimatedStroke } from "@/components/home/animated-stroke";
+import { AnimatedLightStroke } from "@/components/home/animated-light-stroke";
 import { ProjectGallery } from "@/components/home/project-gallery";
 import { IntroSection } from "@/components/home/intro-section";
 import { PortfolioOrbit } from "@/components/home/portfolio-orbit";
 import { ImmersiveMotionCTA } from "@/components/home/immersive-motion-cta";
+import { SignalSubmitButton } from "@/components/home/signal-submit-button";
 
 const services = [
   { title: "UI/UX & Product Design", description: "We transform complex ideas into intuitive, user centered digital experiences. From product strategy and UX research to interface design and design systems, we create products that users love and businesses grow with.", bullets: ["Research and discovery", "Interface design", "UX flows and prototypes", "Design systems"] },
@@ -147,15 +148,15 @@ const faqItems = [
 ];
 
 function ArrowButton({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
-  return <a className={`forge-button${light ? " forge-button-light" : ""}`} href="#contact"><span>{children}</span><span className="button-arrow" aria-hidden="true">↗</span><span className="button-arrow button-arrow-copy" aria-hidden="true">↗</span></a>;
+  return <a className={`forge-button${light ? " forge-button-light" : ""}`} href="#contact"><span>{children}</span><span className="button-arrow" aria-hidden="true">↗</span><span className="button-arrow button-arrow-copy" aria-hidden="true">↗</span><AnimatedLightStroke /></a>;
 }
 
 function AboutAction() {
-  return <a className="forge-button about-action" href="#contact"><span>Know more about us</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="currentColor" /></svg></a>;
+  return <a className="forge-button about-action" href="#contact"><span>Know more about us</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="currentColor" /></svg><AnimatedLightStroke /></a>;
 }
 
 function HeroAction() {
-  return <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">Book a free strategy call</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedStroke className="hero-action-stroke" /></a>;
+  return <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">Book a free strategy call</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedLightStroke /></a>;
 }
 
 const caseStudyHeadline = "Explore how we combine strategic thinking, thoughtful design, and intelligent engineering to turn ambitious ideas into impactful digital products.";
@@ -297,7 +298,7 @@ function CaseStudiesSection() {
               </div>
               <a className="case-explore" href="#contact">
                 <span>Explore Now</span><Image src="/assets/case-studies/1e04d.svg" alt="" width={24} height={24} />
-                <AnimatedStroke className="nav-button-stroke" />
+                <AnimatedLightStroke />
               </a>
             </div>
           </article>
@@ -652,15 +653,23 @@ function ServicesOverview() {
 }
 
 function ContactForm() {
-  const [ref, setRef] = useState(""), [budget, setBudget] = useState("");
+  const [ref, setRef] = useState("Google"), [budget, setBudget] = useState("Not Sure");
   const [sent, setSent] = useState(false);
-  const choices = (values: string[], active: string, set: (v: string) => void) => <div className="pills">{values.map((x) => <button type="button" className={active === x ? "selected" : ""} onClick={() => set(x)} key={x}>{x}</button>)}</div>;
-  return <form className="contact-form" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
-    <div className="form-pair"><label>Full Name *<input required placeholder="Your name" /></label><label>Enter Email *<input required type="email" placeholder="email@company.com" /></label></div>
-    <fieldset><legend>Where did you find us? (Optional)</legend>{choices(["Google", "AI Search", "Bedance", "Dribbble", "Social Media", "Others"], ref, setRef)}</fieldset>
-    <label>Brief project description*<textarea required placeholder="Tell us about your project" /></label>
-    <fieldset><legend>Budget (Optional)</legend>{choices(["Not Sure", "$2K - $5K", "$5K - $10K", "$10K - $20K", "$20K - $50K", "$50K - $100K", "100K+"], budget, setBudget)}</fieldset>
-    <div className="form-bottom"><button className="forge-button" type="submit">{sent ? "Message received ✓" : "Send Message"}<span>↗</span></button><span>hello@codesignforge.com<br /><a href="mailto:hello@codesignforge.com">Book a free 30-min call</a></span></div>
+  const choices = (values: string[], active: string, set: (v: string) => void) => <div className="pills">{values.map((value) => <button type="button" className={active === value ? "selected" : ""} aria-pressed={active === value} onClick={() => set(value)} key={value}>{value}</button>)}</div>;
+  return <form className="contact-form" onSubmit={(event) => { event.preventDefault(); setSent(true); }}>
+    <div className="contact-form-fields">
+      <div className="form-pair">
+        <label>Full Name *<input required name="name" autoComplete="name" placeholder="Your name" /></label>
+        <label>Enter Email *<input required name="email" type="email" autoComplete="email" placeholder="email@company.com" /></label>
+      </div>
+      <fieldset><legend>Where did you find us? (Optional)</legend>{choices(["Google", "AI Search", "Bedance", "Dribbble", "Social Media", "Others"], ref, setRef)}</fieldset>
+      <label>Brief project description*<textarea required name="project" placeholder="Tell us about your project" /></label>
+      <fieldset><legend>Budget (Optional)</legend>{choices(["Not Sure", "$2K - $5K", "$5K - $10K", "$10K - $20K", "$20K - $50K", "$50K - $100K", "100K+"], budget, setBudget)}</fieldset>
+    </div>
+    <div className="form-bottom">
+      <SignalSubmitButton sent={sent} />
+      <a className="contact-booking" href="mailto:hello@codesignforge.com"><span>hello@codesignforge.com</span><strong>Book a free 30-min call</strong></a>
+    </div>
   </form>;
 }
 
@@ -748,7 +757,7 @@ export function HomePage() {
 
     <section className="faq-section" id="faq"><div className="faq-wrap"><h2>Frequently asked questions</h2><Accordion /></div></section>
 
-    <section className="contact-section" id="contact"><div className="section-wrap contact-grid"><div className="contact-copy"><h2>Unlock Your Brand&apos;s Potential at No Cost.</h2><p>Tell us what you are building and when it needs to ship. We reply within one working day.</p><button onClick={() => void copyContact("hello@codesignforge.com")}><Image src="/assets/contact/f0a1f.svg" alt="" width={20} height={20}/>hello@codesignforge.com <Image src="/assets/contact/11f23.svg" alt="Copy" width={18} height={18}/></button><button onClick={() => void copyContact("+880 1621 942031")}><Image src="/assets/contact/555d1.png" alt="" width={20} height={20}/>+880 1621 942031 <Image src="/assets/contact/11f23.svg" alt="Copy" width={18} height={18}/></button>{copyStatus && <span className="copy-toast" role="status">Copied</span>}</div><ContactForm /></div></section>
+    <section className="contact-section" id="contact"><div className="contact-grid"><div className="contact-copy"><div className="contact-intro"><h2>Unlock Your Brand’s Potential at No Cost.</h2><p>Tell us what you are building and when it needs to ship. We reply within one working day.</p></div><div className="contact-details"><button type="button" onClick={() => void copyContact("hello@codesignforge.com")}><span className="contact-detail-content"><span className="contact-email-icon"><Image src="/assets/contact/f0a1f.svg" alt="" width={10} height={10}/></span><span className="contact-detail-value">hello@codesignforge.com</span></span><Image src="/assets/contact/11f23.svg" alt="Copy email" width={16} height={16}/></button><button type="button" onClick={() => void copyContact("+880 1621 942031")}><span className="contact-detail-content"><Image src="/assets/contact/555d1.png" alt="" width={16} height={16}/><span className="contact-detail-value">+880 1621 942031</span></span><Image src="/assets/contact/11f23.svg" alt="Copy phone number" width={16} height={16}/></button></div>{copyStatus && <span className="copy-toast" role="status">Copied</span>}</div><ContactForm /></div></section>
 
     <footer className="home-footer" id="more"><div className="section-wrap footer-grid"><div className="footer-brand"><a className="wordmark" href="#home"><Image src="/assets/footer/60ef7.svg" alt="" width={45} height={45} />CoDesign Forge</a><p>We partner with ambitious businesses to design, build, and scale exceptional digital products through strategy, creativity, and modern engineering.</p><span>Follow us on</span><div className="footer-social">{[["91a8d.svg","Facebook"],["7634c.svg","Instagram"],["4ed93.svg","X"],["2000e.svg","LinkedIn"],["8de61.svg","Behance"],["046f3.svg","Dribbble"]].map(([src,label])=><a href="#more" aria-label={label} key={label}><Image src={`/assets/footer/${src}`} alt="" width={24} height={24}/></a>)}</div></div><div><h3>Explore</h3><a href="#home">Home</a><a href="#about">About Us</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="#pricing">Pricing</a></div><div><h3>Our Services</h3><a href="#services">Branding &amp; Identity</a><a href="#services">UI/UX &amp; Product Design</a><a href="#services">Web &amp; Software Development</a><a href="#services">Webflow &amp; Framer Development</a></div><div><h3>Contact</h3><span>Dhaka, Bangladesh</span><span>+880 1621 942031</span><span>hello@codesignforge.com</span></div></div><div className="footer-meta section-wrap"><span>Terms &amp; Conditions</span><span>© 2026 Codesign Forge. All rights reserved.</span><span>Privacy Policy</span></div><div className="giant-wordmark"><Image src="/assets/footer/30cdc.svg" alt="CoDesign Forge" width={1280} height={116}/></div></footer>
     </main>
