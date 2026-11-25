@@ -85,7 +85,7 @@ input {
 .hero-ring-drag-surface { position:absolute;inset:0;transform-style:preserve-3d;touch-action:pan-y;cursor:grab; }
 .hero-ring-drag-surface.is-dragging { cursor:grabbing; }
 .hero-ring { position:absolute;inset:0;transform:rotateY(var(--ring-rotation,180deg));transform-style:preserve-3d;will-change:transform; }
-.hero-ring-card { position:absolute;top:50%;left:calc(50% - var(--ring-card-width)/2);width:var(--ring-card-width);aspect-ratio:10/7;margin-top:calc(var(--ring-card-width)*-.35);overflow:hidden;border:1px solid #ffffff50;border-radius:16px;backface-visibility:hidden;transform-origin:50% 50% var(--ring-radius);transform:translateZ(calc(0px - var(--ring-radius))) rotateY(calc(var(--card-index) * -36deg));background:linear-gradient(145deg,#181818,#090909 64%,#30140f);box-shadow:0 20px 70px #0008,inset 0 1px #ffffff16; }
+.hero-ring-card { position:absolute;top:50%;left:calc(50% - var(--ring-card-width)/2);width:var(--ring-card-width);aspect-ratio:10/7;margin-top:calc(var(--ring-card-width)*-.35);overflow:hidden;border:1px solid #ffffff50;border-radius:16px;backface-visibility:hidden;transform-origin:50% 50% var(--ring-radius);transform:translateZ(calc(0px - var(--ring-radius))) rotateY(calc(var(--card-index) * -36deg));background:linear-gradient(145deg,#181818,#090909 64%,#30140f); }
 .hero-ring-card>img { position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%; }
 .hero-ring-card::before,.hero-ring-card::after { position:absolute;content:"";pointer-events:none; }
 .hero-ring-card::before { z-index:1;inset:0;background:radial-gradient(ellipse at 50% 100%,#d94c2566,transparent 56%),linear-gradient(115deg,#ffffff08,transparent 42%);transform:translateX(var(--card-parallax,0)); }
