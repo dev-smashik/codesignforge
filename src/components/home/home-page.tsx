@@ -7,12 +7,13 @@ import { AnimatedStroke } from "@/components/home/animated-stroke";
 import { ProjectGallery } from "@/components/home/project-gallery";
 import { IntroSection } from "@/components/home/intro-section";
 import { PortfolioOrbit } from "@/components/home/portfolio-orbit";
+import { ImmersiveMotionCTA } from "@/components/home/immersive-motion-cta";
 
 const services = [
   { title: "UI/UX & Product Design", description: "We transform complex ideas into intuitive, user centered digital experiences. From product strategy and UX research to interface design and design systems, we create products that users love and businesses grow with.", bullets: ["Research and discovery", "Interface design", "UX flows and prototypes", "Design systems"] },
-  { title: "Web & App Development" },
-  { title: "Branding & Identity" },
-  { title: "Webflow & Framer" },
+  { title: "Web & App Development", description: "We design and engineer high performance websites and scalable web applications tailored to your business needs. From modern marketing websites to sophisticated SaaS platforms, we build digital experiences ready for growth.", bullets: ["SaaS Development", "Mobile App Development", "Web Application Development", "Full-Stack Development"] },
+  { title: "Branding & Identity", description: "We create distinctive brand identities that communicate your vision, connect with your audience, and set your business apart. From brand strategy and logo design to complete visual systems, we build brands with purpose.", bullets: ["Logo Design", "Creative Direction", "Brand Guidelines", "Visual Identity"] },
+  { title: "Webflow & Framer", description: "Custom Webflow Websites, Webflow Plugin, Framer Prototypes, Framer Material, Framer App, CMS Integration, Rapid Development.", bullets: ["Webflow Development", "CMS & Scalability", "Framer Development", "Customization & Code"] },
 ];
 
 const why = [
@@ -35,20 +36,83 @@ function HeroAction() {
   return <a className="forge-button hero-action" href="#contact"><span className="hero-action-label">Book a free strategy call</span><svg className="hero-action-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.75 4.5C13.75 7.48733 16.7351 10.7868 21.3027 10.9902L21.75 11V13C16.931 13 13.75 16.4162 13.75 19.5H11.75C11.75 16.9994 13.1355 14.6064 15.3682 13H2.25V11H15.3682C13.1355 9.39361 11.75 7.00061 11.75 4.5H13.75Z" fill="white" /></svg><AnimatedStroke className="hero-action-stroke" /></a>;
 }
 
-function Accordion({ items, faq = false }: { items: typeof services | string[]; faq?: boolean }) {
+function Accordion({ items }: { items: string[] }) {
   const [active, setActive] = useState(0);
-  return <div className={faq ? "faq-list" : "service-list"}>{items.map((item, i) => {
-    const title = typeof item === "string" ? item : item.title;
+  return <div className="faq-list">{items.map((title, i) => {
     const open = i === active;
     return <div className={`accordion-row ${open ? "is-open" : ""}`} key={title}>
-      <button aria-expanded={open} aria-controls={`panel-${faq ? "faq" : "service"}-${i}`} onClick={() => setActive(open ? -1 : i)}>
-        {!faq && <span className="service-number">0{i + 1}</span>}<span>{title}</span><span className="accordion-symbol">{open ? "−" : "+"}</span>
+      <button aria-expanded={open} aria-controls={`panel-faq-${i}`} onClick={() => setActive(open ? -1 : i)}>
+        <span>{title}</span><span className="accordion-symbol">{open ? "−" : "+"}</span>
       </button>
-      <div className="accordion-panel" id={`panel-${faq ? "faq" : "service"}-${i}`} hidden={!open}>
-        {faq ? (i === 0 ? firstAnswer.map((p) => <p key={p}>{p}</p>) : null) : (typeof item !== "string" && item.description ? <><p>{item.description}</p><ul>{item.bullets?.map((b) => <li key={b}>{b}</li>)}</ul><a href="#contact">See the service ↗</a></> : null)}
+      <div className="accordion-panel" id={`panel-faq-${i}`} hidden={!open}>
+        {i === 0 ? firstAnswer.map((p) => <p key={p}>{p}</p>) : null}
       </div>
     </div>;
   })}</div>;
+}
+
+function ServiceAccordion() {
+  const [active, setActive] = useState(0);
+  return <div className="service-accordion" aria-label="Our services">
+    {services.map((service, index) => {
+      const open = active === index;
+      return <article className={`service-accordion-item${open ? " is-expanded" : ""}`} key={service.title}>
+        <div className="service-accordion-row">
+          <span className="service-accordion-index">0{index + 1}</span>
+          <div className="service-accordion-content">
+            <button className="service-accordion-toggle" type="button" aria-expanded={open} aria-controls={`service-details-${index}`} onClick={() => setActive(open ? -1 : index)}>
+              <span>{service.title}</span>
+              <svg className="service-accordion-icon" viewBox="0 0 32 32" aria-hidden="true">
+                <rect x=".67" y=".67" width="30.66" height="30.66" rx="15.33" />
+                {open ? <path d="m10.34 10.34 11.32 11.32M21.66 10.34 10.34 21.66" /> : <path d="M16 8v16M24 16H8" />}
+              </svg>
+            </button>
+            <div className="service-accordion-details" id={`service-details-${index}`} aria-hidden={!open} inert={!open}>
+              <p>{service.description}</p>
+              <ul>{service.bullets.map((bullet) => <li key={bullet}><span aria-hidden="true" />{bullet}</li>)}</ul>
+              <a href="#contact">See the service <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </article>;
+    })}
+  </div>;
+}
+
+const projectSteps = [
+  ["Weeks 1 - 2", "Discover", "Workshops, interviews and a teardown of what you have. You get a written plan and a fixed quote."],
+  ["Weeks 3 - 6", "Design", "Flows first, then the interface, in weekly reviews. Every screen comes from one shared design system."],
+  ["Weeks 6-12", "Build", "Production code from week six, on a staging link you can open every Friday."],
+  ["Weeks 12 and on", "Launch and stay", "We launch with you, watch the numbers and stay on a monthly retainer if you want us to."],
+];
+
+function ServicesOverview() {
+  return <section className="services-section" id="services">
+    <div className="services-inner">
+      <div className="services-feature">
+        <div className="services-feature-intro">
+          <div className="services-feature-copy">
+            <h2>What we do</h2>
+            <p>A glimpse into our creative journey projects that make us proud</p>
+          </div>
+          <div className="service-image"><Image src="/assets/services/36f20.png" alt="Screen Skinz design project" width={960} height={1110} /></div>
+        </div>
+        <ServiceAccordion />
+      </div>
+      <div className="project-process">
+        <div className="project-process-header">
+          <h2>How a project runs</h2>
+          <p>Twelve weeks from kickoff to launch for most products, with a fixed quote after week two.</p>
+        </div>
+        <div className="project-process-timeline">
+          {projectSteps.map(([timeframe, title, description]) => <article className="project-process-step" key={title}>
+            <div><span>{timeframe}</span><h3>{title}</h3></div>
+            <p>{description}</p>
+          </article>)}
+        </div>
+      </div>
+    </div>
+  </section>;
 }
 
 function ContactForm() {
@@ -116,9 +180,9 @@ export function HomePage() {
 
     <PortfolioOrbit />
 
-    <section className="services-section" id="services"><div className="services-top section-wrap"><div className="service-intro"><h2>What we do</h2><p>A glimpse into our creative journey projects that make us proud</p><div className="service-image"><Image src="/assets/services/36f20.png" alt="Screen Skinz design project" width={960} height={1110} /></div></div><Accordion items={services} /></div><div className="process section-wrap"><div className="process-title"><h2>How a project runs</h2><p>Twelve weeks from kickoff to launch for most products, with a fixed quote after week two.</p></div><div className="process-steps">{[["Weeks 1 - 2", "Discover", "Workshops, interviews and a teardown of what you have. You get a written plan and a fixed quote."], ["Weeks 3 - 6", "Design", "Flows first, then the interface, in weekly reviews. Every screen comes from one shared design system."], ["Weeks 6-12", "Build", "Production code from week six, on a staging link you can open every Friday."], ["Weeks 12 and on", "Launch and stay", "We launch with you, watch the numbers and stay on a monthly retainer if you want us to."]].map((s) => <article key={s[1]}><span>{s[0]}</span><h3>{s[1]}</h3><p>{s[2]}</p></article>)}</div></div></section>
+    <ServicesOverview />
 
-    <section className="cta-collage" id="pricing">{Array.from({length:8},(_,i)=><div className={`cta-card cta-${i+1}`} key={i}><Image src={`/assets/cta-cards/card-${i+1}.png`} alt="CoDesign Forge project showcase" width={400} height={300} /></div>)}<div className="cta-center"><h2>Get a Dedicated SaaS Design &amp; Development Team Without the Cost of Hiring In House.</h2><p>We bring designers and engineers together to design, build, and launch exceptional SaaS products faster and more efficiently.</p><ArrowButton>See pricing &amp; availability</ArrowButton><div className="social-line">We are available on socials <span>{[["61f43.svg","Dribbble"],["98f84.svg","Instagram"],["f5ae5.svg","X"],["ce7cf.svg","LinkedIn"]].map(([src,label])=><a href="#more" aria-label={label} key={label}><Image src={`/assets/cta/${src}`} alt="" width={24} height={24}/></a>)}</span></div></div></section>
+    <ImmersiveMotionCTA />
 
     <section className="video-section"><h2>Intro Video</h2><button aria-label="Play introduction video" className="play-button">▶</button></section>
 
@@ -130,7 +194,7 @@ export function HomePage() {
 
     <section className="testimonials"><div className="section-wrap"><div className="testimonial-header"><h2>Building Trust Through Every Partnership</h2><div><button aria-label="Previous testimonial" onClick={()=>testimonialTrack.current?.scrollBy({left:-416,behavior:"smooth"})}>←</button><button aria-label="Next testimonial" onClick={()=>testimonialTrack.current?.scrollBy({left:416,behavior:"smooth"})}>→</button></div></div><div className="testimonial-track" ref={testimonialTrack}><article className="rating-card"><strong>4.8</strong><span>★★★★★</span><p>Over 10+ Reviews</p><small>fiverr　upwork　99designs　freelancer</small></article>{[["Working with Codesign Forge was smooth and efficient. They understood our vision and delivered exactly what we needed.", "Rohidul Islam", "Software Engineer", "siteassist", "c39de.png"], ["Codesign Forge delivered an excellent experience with seamless communication, thoughtful collaboration, and outstanding attention to detail.", "RaShaunBrown", "Co-Founder", "codesign", "510e2.png"], ["They quickly understood our requirements and turned our ideas into a practical solution. Highly recommended!", "Arbaz Khan", "Founder", "Khantrast", "50690.png"], ["From the initial discussion to final delivery, everything was handled professionally. Looking forward to working together again.", "Piotr Czernik", "Founder", "spawndrop", "46a9a.png"]].map((t) => <article className="quote-card" key={t[1]}><b>{t[3]}</b><p>“{t[0]}”</p><footer><Image src={`/assets/testimonials/${t[4]}`} alt="" width={48} height={48}/><span><strong>{t[1]}</strong><small>{t[2]}</small></span></footer></article>)}</div></div></section>
 
-    <section className="faq-section"><div className="section-wrap faq-wrap"><h2>Frequently asked questions</h2><Accordion items={questions} faq /></div></section>
+    <section className="faq-section"><div className="section-wrap faq-wrap"><h2>Frequently asked questions</h2><Accordion items={questions} /></div></section>
 
     <section className="contact-section" id="contact"><div className="section-wrap contact-grid"><div className="contact-copy"><h2>Unlock Your Brand&apos;s Potential at No Cost.</h2><p>Tell us what you are building and when it needs to ship. We reply within one working day.</p><button onClick={() => void copyContact("hello@codesignforge.com")}><Image src="/assets/contact/f0a1f.svg" alt="" width={20} height={20}/>hello@codesignforge.com <Image src="/assets/contact/11f23.svg" alt="Copy" width={18} height={18}/></button><button onClick={() => void copyContact("+880 1621 942031")}><Image src="/assets/contact/555d1.png" alt="" width={20} height={20}/>+880 1621 942031 <Image src="/assets/contact/11f23.svg" alt="Copy" width={18} height={18}/></button>{copyStatus && <span className="copy-toast" role="status">Copied</span>}</div><ContactForm /></div></section>
 
