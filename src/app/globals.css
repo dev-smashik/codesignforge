@@ -105,7 +105,28 @@ input {
 .case-copy>a { margin-top:0; }
 .why-section { padding:130px 0;background:#0b0b0b; }.why-grid { display:grid;grid-template-columns:1fr 1fr;gap:100px; }.why-sticky { position:sticky;top:35vh;align-self:start; }.why-sticky h2 { max-width:520px;margin:30px 0 20px;font:500 54px/1.1 var(--font-bricolage),sans-serif;letter-spacing:-2px; }.why-sticky p { max-width:440px;color:#a5a5ab;font-size:18px;line-height:1.5; }.why-list article { min-height:330px;padding:40px 10px;border-bottom:1px solid #ffffff36; }.why-list article>span { color:#dc532c;font-size:15px; }.why-list h3 { margin:24px 0 12px;font:500 32px/1.2 var(--font-bricolage),sans-serif; }.why-list p { max-width:520px;color:#a5a5ab;font-size:18px;line-height:1.5; }
 .testimonials { padding:110px 0 120px;background:#f1f5f9;color:#0b0b0b;overflow:hidden; }.testimonials h2 { max-width:720px;margin:0 0 55px;font:500 48px/1.16 var(--font-bricolage),sans-serif;letter-spacing:-1.6px; }.testimonial-track { display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none; }.testimonial-track::-webkit-scrollbar { display:none; }.rating-card,.quote-card { flex:0 0 416px;min-height:500px;padding:28px;background:white;border:1px solid #e5e5e5;scroll-snap-align:start; }.rating-card>strong { display:block;margin:10px 0;color:#d2d2d5;font:600 100px var(--font-bricolage),sans-serif; }.rating-card>span { color:#dc532c;font-size:24px;letter-spacing:4px; }.rating-card p { font:500 24px var(--font-bricolage),sans-serif; }.rating-card small { color:#777980;font-size:13px; }.quote-card>b { display:block;margin:6px 0 50px;font:600 24px var(--font-bricolage),sans-serif; }.quote-card>p { min-height:220px;font-size:26px;line-height:1.35;font-weight:500; }.quote-card footer { display:flex;align-items:center;gap:14px; }.quote-card footer i { display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#e9d6cb;color:#54372b;font-style:normal; }.quote-card footer strong,.quote-card footer small { display:block; }.quote-card footer small { margin-top:5px;color:#777980; }
-.faq-section { padding:110px 0 130px;background:#fff;color:#0b0b0b; }.faq-wrap { max-width:1000px; }.faq-wrap>h2 { margin:0 0 50px;font:500 40px/1.2 var(--font-bricolage),sans-serif; }
+.faq-section { padding:96px 24px;background:#fff;color:#0b0b0b; }
+.faq-wrap { width:min(848px,100%);margin:0 auto; }
+.faq-wrap>h2 { margin:0 0 32px;text-align:center;font:500 36px/48px var(--font-bricolage),sans-serif;letter-spacing:-.5px; }
+.faq-list .accordion-row { border-bottom:1px solid #e5e5e5; }
+.faq-list .accordion-row>button { min-height:76px;box-sizing:border-box;padding:24px 0;display:flex;align-items:center;gap:24px;color:#0b0b0b;font:500 20px/28px var(--font-inter-tight),sans-serif; }
+.faq-list .accordion-row>button>span:first-child { flex:1; }
+.faq-list .accordion-symbol { width:20px;height:20px;flex:none;display:grid;place-items:center;color:#0b0b0b;font:400 23px/20px var(--font-inter-tight),sans-serif; }
+.faq-list .accordion-panel { padding:0 44px 24px 0; }
+.faq-list .accordion-panel p { margin:0 0 16px;color:#52525b;font:400 16px/24px var(--font-inter-tight),sans-serif;white-space:pre-line; }
+.faq-list .accordion-panel p:last-child { margin-bottom:0; }
+.faq-list .accordion-panel strong { color:#0b0b0b;font-weight:600; }
+.faq-more { display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;margin:32px auto 0;padding:0 20px;border:1px solid #0b0b0b;border-radius:8px;background:#fff;color:#0b0b0b;font:500 16px/24px var(--font-inter-tight),sans-serif;cursor:pointer;transition:background-color .2s ease,color .2s ease; }
+.faq-more:hover { background:#0b0b0b;color:#fff; }
+.faq-more>span:last-child { font-size:22px;line-height:1; }
+@media(max-width:760px) {
+  .faq-section { padding:72px 18px; }
+  .faq-wrap>h2 { margin-bottom:24px;font-size:32px;line-height:38px; }
+  .faq-list .accordion-row>button { min-height:68px;padding:20px 0;gap:16px;font-size:18px;line-height:24px; }
+  .faq-list .accordion-panel { padding:0 28px 20px 0; }
+  .faq-list .accordion-panel p { font-size:15px;line-height:23px; }
+  .faq-more { margin-top:24px; }
+}
 .contact-section { padding:100px 0;background:#0b0b0b;color:white; }.contact-grid { display:grid;grid-template-columns:1fr 632px;gap:90px; }.contact-copy h2 { max-width:470px;margin:0 0 22px;font:500 40px/1.15 var(--font-bricolage),sans-serif;letter-spacing:-.8px; }.contact-copy>p { max-width:390px;color:#a5a5ab;font-size:18px;line-height:1.5; }.contact-copy button { display:block;width:256px;height:48px;margin:22px 0 0;border:1px solid #ffffff28;border-radius:8px;background:#121212;color:white;text-align:left;padding:0 14px;cursor:pointer; }.contact-form { display:flex;flex-direction:column;gap:16px; }.contact-form label,.contact-form legend { color:#e8e8e8;font-size:15px; }.contact-form label { display:flex;flex-direction:column;gap:10px; }.form-pair { display:grid;grid-template-columns:1fr 1fr;gap:24px; }.contact-form input,.contact-form textarea { width:100%;border:1px solid #ffffff22;border-radius:8px;background:#121212;color:white;padding:12px;outline:none; }.contact-form input { height:48px; }.contact-form input:focus,.contact-form textarea:focus { border-color:#dc532c;box-shadow:0 0 0 2px #dc532c40; }.contact-form textarea { height:200px;resize:vertical; }.contact-form fieldset { border:0;padding:0;margin:0; }.contact-form legend { margin-bottom:12px; }.pills { display:flex;flex-wrap:wrap;gap:8px; }.pills button { padding:8px 14px;border:1px solid #dc532c44;border-radius:99px;background:transparent;color:#a5a5ab;font-size:14px;cursor:pointer; }.pills button.selected { background:#dc532c;color:white; }.form-bottom { display:flex;align-items:center;justify-content:space-between;margin-top:2px; }.form-bottom>span { color:#d3d3d3;text-align:right;font-size:14px;line-height:1.7; }.form-bottom>span a { color:#ff906f; }
 .home-footer { position:relative;overflow:hidden;padding:100px 0 0;background:radial-gradient(ellipse at 68% 20%,#5b201c 0,transparent 46%),#0b0b0b;color:#fff; }.home-footer:before { content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,#fff08 0,#fff02 12px,transparent 54px);backdrop-filter:blur(5px);opacity:.35; }.footer-grid { position:relative;display:grid;grid-template-columns:1.7fr .65fr 1.2fr .8fr;gap:55px;min-height:300px; }.footer-brand>p { max-width:420px;margin:24px 0 35px;color:#b8b8bd;font-size:16px;line-height:1.5; }.footer-brand>span { color:#b8b8bd; }.footer-social { margin-top:14px;font-size:21px; }.footer-grid h3 { margin:4px 0 24px;font:500 18px var(--font-bricolage),sans-serif; }.footer-grid>div:not(:first-child)>a,.footer-grid>div:not(:first-child)>span { display:block;margin:0 0 15px;color:#bbb;font-size:15px; }.footer-grid>div>a:hover { color:#ff906f; }.footer-meta { position:relative;display:flex;justify-content:space-between;padding:25px 0;border-top:1px solid #ffffff2e;color:#aaa;font-size:14px; }.giant-wordmark { position:relative;text-align:center;font:600 clamp(80px,13vw,190px)/.9 var(--font-bricolage),sans-serif;letter-spacing:-.07em;color:transparent;-webkit-text-stroke:1px #ffffff63;white-space:nowrap;padding:18px 0 24px; }
 @media(max-width:1100px) { .home-nav nav { gap:18px; }.hero-gallery { width:1500px; }.hero-shot { width:240px; }.role-left { left:8%; }.role-right { right:8%; }.services-top { grid-template-columns:38% 1fr;gap:40px; }.service-image { width:100%; }.case-card { gap:28px; }.contact-grid { grid-template-columns:1fr 1.4fr;gap:35px; }.footer-grid { gap:28px; } }
@@ -621,4 +642,14 @@ input {
 }
 @media(prefers-reduced-motion:reduce) {
   .testimonial-controls button { transition:none; }
+}
+
+/* Keep the FAQ layout overrides after the page-wide mobile defaults. */
+@media(max-width:760px) {
+  .faq-section { padding:72px 18px; }
+  .faq-wrap>h2 { margin-bottom:24px;font-size:32px;line-height:38px; }
+  .faq-list .accordion-row>button { min-height:68px;box-sizing:border-box;padding:20px 0;gap:16px;font-size:18px;line-height:24px; }
+  .faq-list .accordion-panel { padding:0 28px 20px 0; }
+  .faq-list .accordion-panel p { font-size:15px;line-height:23px; }
+  .faq-more { margin-top:24px; }
 }
