@@ -759,7 +759,38 @@ export function HomePage() {
 
     <section className="contact-section" id="contact"><div className="contact-grid"><div className="contact-copy"><div className="contact-intro"><h2>Unlock Your Brand’s Potential at No Cost.</h2><p>Tell us what you are building and when it needs to ship. We reply within one working day.</p></div><div className="contact-details"><button type="button" onClick={() => void copyContact("hello@codesignforge.com")}><span className="contact-detail-content"><span className="contact-email-icon"><Image src="/assets/contact/f0a1f.svg" alt="" width={10} height={10}/></span><span className="contact-detail-value">hello@codesignforge.com</span></span><Image src="/assets/contact/11f23.svg" alt="Copy email" width={16} height={16}/></button><button type="button" onClick={() => void copyContact("+880 1621 942031")}><span className="contact-detail-content"><Image src="/assets/contact/555d1.png" alt="" width={16} height={16}/><span className="contact-detail-value">+880 1621 942031</span></span><Image src="/assets/contact/11f23.svg" alt="Copy phone number" width={16} height={16}/></button></div>{copyStatus && <span className="copy-toast" role="status">Copied</span>}</div><ContactForm /></div></section>
 
-    <footer className="home-footer" id="more"><div className="section-wrap footer-grid"><div className="footer-brand"><a className="wordmark" href="#home"><Image src="/assets/footer/60ef7.svg" alt="" width={45} height={45} />CoDesign Forge</a><p>We partner with ambitious businesses to design, build, and scale exceptional digital products through strategy, creativity, and modern engineering.</p><span>Follow us on</span><div className="footer-social">{[["91a8d.svg","Facebook"],["7634c.svg","Instagram"],["4ed93.svg","X"],["2000e.svg","LinkedIn"],["8de61.svg","Behance"],["046f3.svg","Dribbble"]].map(([src,label])=><a href="#more" aria-label={label} key={label}><Image src={`/assets/footer/${src}`} alt="" width={24} height={24}/></a>)}</div></div><div><h3>Explore</h3><a href="#home">Home</a><a href="#about">About Us</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="#pricing">Pricing</a></div><div><h3>Our Services</h3><a href="#services">Branding &amp; Identity</a><a href="#services">UI/UX &amp; Product Design</a><a href="#services">Web &amp; Software Development</a><a href="#services">Webflow &amp; Framer Development</a></div><div><h3>Contact</h3><span>Dhaka, Bangladesh</span><span>+880 1621 942031</span><span>hello@codesignforge.com</span></div></div><div className="footer-meta section-wrap"><span>Terms &amp; Conditions</span><span>© 2026 Codesign Forge. All rights reserved.</span><span>Privacy Policy</span></div><div className="giant-wordmark"><Image src="/assets/footer/30cdc.svg" alt="CoDesign Forge" width={1280} height={116}/></div></footer>
+    <footer className="home-footer figma-footer" id="more" aria-label="Site footer">
+      <div className="footer-backdrop" aria-hidden="true">
+        <div className="footer-gradient-frame">
+          <Image className="footer-gradient-asset" src="/assets/footer/322cd.svg" alt="" width={3375} height={4494} />
+        </div>
+      </div>
+      <div className="footer-inner">
+        <div className="footer-information">
+          <div className="footer-navigation">
+            <div className="footer-branding">
+              <div className="footer-company">
+                <a className="footer-logo" href="#home"><Image src="/assets/footer/60ef7.svg" alt="" width={46} height={46} /><span>CoDesign Forge</span></a>
+                <p>We partner with ambitious businesses to design, build, and scale exceptional digital products through strategy, creativity, and modern engineering.</p>
+              </div>
+              <div className="footer-social-block">
+                <h2>Follow us on</h2>
+                <div className="footer-social">{[["91a8d.svg", "Facebook"], ["7634c.svg", "Instagram"], ["4ed93.svg", "X"], ["2000e.svg", "LinkedIn"], ["8de61.svg", "Behance"], ["046f3.svg", "Dribbble"]].map(([src, label]) => <a href="#more" aria-label={label} key={label}><Image src={`/assets/footer/${src}`} alt="" width={24} height={24} /></a>)}</div>
+              </div>
+            </div>
+            <nav className="footer-links" aria-label="Footer navigation">
+              <div className="footer-link-group"><h2>Explore</h2><div><a href="#home">Home</a><a href="#about">About Us</a><a href="#case-studies">Projects</a><a href="#contact">Contact</a><a href="#contact">Pricing</a></div></div>
+              <div className="footer-link-group"><h2>Our Services</h2><div><a href="#services">Branding &amp; Identity</a><a href="#services">UI/UX &amp; Product Design</a><a href="#services">Web &amp; Software Development</a><a href="#services">Webflow &amp; Framer Development</a></div></div>
+              <div className="footer-link-group"><h2>Contact</h2><div><a href="#contact">Dhaka, Bangladesh</a><a href="tel:+8801621942031">+880 1621 942031</a><a href="mailto:hello@codesignforge.com">hello@codesignforge.com</a></div></div>
+            </nav>
+          </div>
+          <div className="footer-meta"><a href="#more">Terms &amp; Conditions</a><span>© 2026 Codesign Forge. All rights reserved.</span><a href="#more">Privacy Policy</a></div>
+        </div>
+      </div>
+      <div className="footer-wordmark" aria-hidden="true">
+        <Image className="footer-wordmark-image" src="/assets/footer/footer-glass-600-2058.png" alt="" width={3840} height={432} />
+      </div>
+    </footer>
     </main>
   </>;
 }
