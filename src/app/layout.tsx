@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Inter_Tight, Playfair_Display } from "next/font/google";
+import { Bricolage_Grotesque, Inter, Inter_Tight, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -11,6 +11,12 @@ const bricolage = Bricolage_Grotesque({
 const interTight = Inter_Tight({
   subsets: ["latin"],
   variable: "--font-inter-tight",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -46,7 +52,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${bricolage.variable} ${interTight.variable} ${playfair.variable} bg-background font-body text-foreground antialiased`}>
+      <body className={`${bricolage.variable} ${inter.variable} ${interTight.variable} ${playfair.variable} bg-background font-body text-foreground antialiased`}>
         {children}
       </body>
     </html>

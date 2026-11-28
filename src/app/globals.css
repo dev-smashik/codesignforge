@@ -220,8 +220,8 @@ input {
 .home-page a.forge-button-light { color:#0b0b0b; }
 .role-badge { padding:10px 12px; }
 .role-pointer { position:absolute;top:-30px;width:30px;height:32px; }
-.role-left .role-pointer { right:-9px; }
-.role-right .role-pointer { left:-12px; }
+.role-left .role-pointer { right:-9px; transform:scaleX(-1); }
+.role-right .role-pointer { left:-12px; transform:scaleX(1); }
 .service-list .accordion-row>button { font-size:40px;line-height:1.2; }
 .faq-wrap { max-width:848px; }
 .cta-center .social-line>span { display:flex;justify-content:center;gap:12px; }
@@ -250,8 +250,8 @@ input {
 .role-left { top:497px; }
 .role-right { top:530px; }
 .role-pointer { top:-30px;height:32px; }
-.role-left .role-pointer { right:-22px;transform:rotate(180deg); }
-.role-right .role-pointer { top:-32px;left:-23px; }
+.role-left .role-pointer { right:-22px;transform:scaleX(-1); }
+.role-right .role-pointer { top:-32px;left:-23px;transform:scaleX(1); }
 .home-hero { height:1108px; }
 .home-hero .role-left { top:467px;left:clamp(24px,18.75vw,360px);width:176px;height:64px;padding:0;background:transparent;box-shadow:none;animation:rolebadge-float 1.8s ease-in-out infinite; }
 .home-hero .role-left .role-pointer { top:0;left:152px;right:auto;width:39px;height:42px;transform:none; }
@@ -802,18 +802,18 @@ input {
   .home-hero .hero-copy h1 { width:100%;max-width:100%;margin:0;font:500 36px/1.2 var(--font-bricolage),sans-serif;letter-spacing:-1.08px;text-align:center;transform:none; }
   .home-hero .hero-copy h1 em { font-family:inherit;font-style:normal;font-weight:500; }
   .home-hero .hero-details { height:auto;gap:40px; }
-  .home-hero .hero-details p { width:100%;max-width:100%;margin:0;color:#a5a5ab;font:400 16px/1.4 var(--font-inter-tight),sans-serif;text-align:center; }
+  .home-hero .hero-details p { width:100%;max-width:100%;margin:0;color:#a5a5ab;font:400 16px/1.4 var(--font-inter),sans-serif;text-align:center; }
   .home-page .home-hero a.forge-button.hero-action { height:48px;padding:11px 16px 11px 20px;font:500 16px/28px var(--font-bricolage),sans-serif; }
-  .home-hero .hero-ring-showcase { --ring-radius:300px;--ring-card-width:190px;position:absolute;top:555px;left:0;width:100%;height:280px;overflow:hidden;perspective:1100px;perspective-origin:50% 40%;transform:none; }
+  .home-hero .hero-ring-showcase { --ring-radius:300px;--ring-card-width:175px;position:absolute;top:575px;left:0;width:100%;height:300px;overflow:hidden;perspective:1100px;perspective-origin:50% 40%;transform:none; }
   .home-hero .hero-ring-drag-surface { display:block;touch-action:pan-y; }
-  .home-hero .hero-ring-card { height:216px;aspect-ratio:auto;margin-top:-108px;border-radius:12px; }
-  .home-hero .hero-ring-card::after { inset:8px;border-radius:8px; }
+  .home-hero .hero-ring-card { height:275px;aspect-ratio:auto;margin-top:-137.5px;border-radius:8px; }
+  .home-hero .hero-ring-card::after { inset:6px;border-radius:6px; }
   .home-hero .role-badge { display:block;z-index:3;padding:0;border:0;border-radius:0;box-shadow:none;animation:none; }
-  .home-hero .role-left { top:468px;left:9px;width:110px;height:34px; }
-  .home-hero .role-left .role-pointer { position:absolute;top:0;left:78px;right:auto;width:11px;height:12px;transform:none; }
-  .home-hero .role-left .role-label { top:10px;left:0;height:22px;padding:2px 6px;border-radius:4.78px;box-shadow:0 1.2px .75px rgba(0,0,0,.19); }
-  .home-hero .role-left .role-label b,.home-hero .role-right b { font:400 10px/15px var(--font-inter-tight),sans-serif;letter-spacing:-.3px;white-space:nowrap; }
-  .home-hero .role-right { top:454px;left:286px;right:auto;width:96px;height:34px; }
-  .home-hero .role-right .role-pointer { position:absolute;top:0;left:0;right:auto;width:11px;height:12px;transform:none; }
-  .home-hero .role-right b { position:absolute;top:10px;left:7px;display:flex;height:23px;align-items:center;padding:3px 8px;border-radius:4.87px;background:#dc532c;color:#fff;box-shadow:0 1.2px .75px rgba(0,0,0,.19); }
+  .home-hero .role-left { top:480px;left:13px;width:110px;height:34px; }
+  .home-hero .role-left .role-pointer { position:absolute;top:-1.47px;left:76.09px;right:auto;width:16.5164px;height:17.6472px;transform:scaleX(-1); }
+  .home-hero .role-left .role-label { top:9.91px;left:0;height:22.09px;padding:2px 6px;border-radius:4.776px;box-shadow:0 1.194px .746px rgba(0,0,0,.19); }
+  .home-hero .role-left .role-label b,.home-hero .role-right b { font:400 10px/15px var(--font-inter),sans-serif;letter-spacing:-.3px;white-space:nowrap; }
+  .home-hero .role-right { top:484px;left:auto;right:5px;width:96px;height:0px; }
+  .home-hero .role-right .role-pointer { position:absolute;top:-1.5px;left:-2.4px;right:auto;width:16.6243px;height:17.7577px;transform:scaleX(1); }
+  .home-hero .role-right b { position:absolute;top:10.48px;left:7px;display:flex;height:22.522px;align-items:center;padding:3px 8px;border-radius:4.87px;background:#dc532c;color:#fff;letter-spacing:-.2px;box-shadow:0 1.217px .761px rgba(0,0,0,.19); }
 }
