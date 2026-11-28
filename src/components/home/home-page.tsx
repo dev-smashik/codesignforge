@@ -407,7 +407,7 @@ function WhyChooseUsSection() {
 
 const testimonials = [
   {
-    quote: <><span>"Working with Codesign Forge</span><em> was smooth and efficient. </em><span>They understood our vision</span><em> and </em><span>delivered exactly</span><em> what we needed."</em></>,
+    quote: <><span>&quot;Working with Codesign Forge</span><em> was smooth and efficient. </em><span>They understood our vision</span><em> and </em><span>delivered exactly</span><em> what we needed.&quot;</em></>,
     name: "Rohidul Islam",
     role: "Founder",
     company: "siteassist",
@@ -415,7 +415,7 @@ const testimonials = [
     image: "c39de.png",
   },
   {
-    quote: <><em>"They </em><span>quickly understood our requirements</span><em> and turned our ideas into a practical solution. </em><span>Highly recommended!</span><em>"</em></>,
+    quote: <><em>&quot;They </em><span>quickly understood our requirements</span><em> and turned our ideas into a practical solution. </em><span>Highly recommended!</span><em>&quot;</em></>,
     name: "Arbaz Khan",
     role: "Founder",
     company: "Khantrast",
@@ -423,7 +423,7 @@ const testimonials = [
     image: "50690.png",
   },
   {
-    quote: <><em>"</em><span>Codesign Forge</span><em> delivered an excellent experience with </em><span>seamless communication</span><em>, thoughtful collaboration, and </em><span>outstanding attention to detail."</span></>,
+    quote: <><em>&quot;</em><span>Codesign Forge</span><em> delivered an excellent experience with </em><span>seamless communication</span><em>, thoughtful collaboration, and </em><span>outstanding attention to detail.&quot;</span></>,
     name: "RaShaun Brown",
     role: "Co-Founder",
     company: "Screen Skinz",
@@ -431,7 +431,7 @@ const testimonials = [
     image: "510e2.png",
   },
   {
-    quote: <><em>"From the initial discussion to final delivery, </em><span>everything was handled professionally. </span><em>Looking forward to </em><span>working together again."</span></>,
+    quote: <><em>&quot;From the initial discussion to final delivery, </em><span>everything was handled professionally. </span><em>Looking forward to </em><span>working together again.&quot;</span></>,
     name: "Piotr Czernik",
     role: "Founder",
     company: "spawndrop",
