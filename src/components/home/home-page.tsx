@@ -409,7 +409,7 @@ const testimonials = [
   {
     quote: <><span>"Working with Codesign Forge</span><em> was smooth and efficient. </em><span>They understood our vision</span><em> and </em><span>delivered exactly</span><em> what we needed."</em></>,
     name: "Rohidul Islam",
-    role: "Software Engineer",
+    role: "Founder",
     company: "siteassist",
     companyClass: "siteassist",
     image: "c39de.png",
@@ -444,6 +444,7 @@ function TestimonialsSection() {
   const stageRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const quotesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -451,10 +452,16 @@ function TestimonialsSection() {
     const track = trackRef.current;
     if (!stage || !viewport || !track) return;
 
+    const mobile = window.matchMedia("(max-width: 760px)");
     let frame = 0;
     const updatePosition = () => {
       cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
+        if (mobile.matches) {
+          track.style.transform = "";
+          stage.style.height = "";
+          return;
+        }
         const distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
         const pinDistance = Math.max(1, stage.offsetHeight - viewport.offsetHeight);
         const progress = Math.min(1, Math.max(0, -stage.getBoundingClientRect().top / pinDistance));
@@ -466,14 +473,21 @@ function TestimonialsSection() {
     updatePosition();
     window.addEventListener("scroll", updatePosition, { passive: true });
     window.addEventListener("resize", updatePosition);
+    mobile.addEventListener("change", updatePosition);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", updatePosition);
       window.removeEventListener("resize", updatePosition);
+      mobile.removeEventListener("change", updatePosition);
     };
   }, []);
 
   const scrollCards = (direction: -1 | 1) => {
+    const quotes = quotesRef.current;
+    if (window.matchMedia("(max-width: 760px)").matches && quotes) {
+      quotes.scrollBy({ left: direction * quotes.clientWidth * 0.82, behavior: "smooth" });
+      return;
+    }
     const stage = stageRef.current;
     const viewport = viewportRef.current;
     if (!stage || !viewport) return;
@@ -504,12 +518,21 @@ function TestimonialsSection() {
                   <p>Over 10+ Reviews</p>
                 </div>
                 <div className="rating-platforms" aria-label="Fiverr, Upwork, 99designs, and Freelancer">
-                  <Image src="/assets/testimonials/49b7a.svg" alt="Fiverr" width={67} height={20} />
-                  <Image src="/assets/testimonials/71050.svg" alt="Upwork" width={66} height={20} />
-                  <Image src="/assets/testimonials/30f84.svg" alt="99designs" width={84} height={20} />
-                  <Image src="/assets/testimonials/316ac.svg" alt="Freelancer" width={82} height={20} />
+                  <div className="rating-platforms-desktop">
+                    <Image src="/assets/testimonials/49b7a.svg" alt="Fiverr" width={67} height={20} />
+                    <Image src="/assets/testimonials/71050.svg" alt="Upwork" width={66} height={20} />
+                    <Image src="/assets/testimonials/30f84.svg" alt="99designs" width={84} height={20} />
+                    <Image src="/assets/testimonials/316ac.svg" alt="Freelancer" width={82} height={20} />
+                  </div>
+                  <div className="rating-platforms-mobile" aria-hidden="true">
+                    <Image src="/assets/testimonials/71050.svg" alt="" width={66} height={20} />
+                    <Image src="/assets/testimonials/49b7a.svg" alt="" width={67} height={20} />
+                    <Image src="/assets/testimonials/30f84.svg" alt="" width={84} height={20} />
+                    <Image src="/assets/testimonials/316ac.svg" alt="" width={82} height={20} />
+                  </div>
                 </div>
               </article>
+              <div className="testimonial-quotes" ref={quotesRef}>
               {testimonials.map((testimonial) => (
                 <article className="quote-card" key={testimonial.name}>
                   <div className="testimonial-content">
@@ -530,6 +553,7 @@ function TestimonialsSection() {
                   </footer>
                 </article>
               ))}
+              </div>
             </div>
           </div>
         </div>
