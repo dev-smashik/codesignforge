@@ -510,19 +510,34 @@ input {
   .service-accordion-details ul { grid-template-columns:1fr; grid-template-rows:none; grid-auto-flow:row; gap:10px; margin:22px 0 24px; }
   .service-accordion-details li { font-size:15px; }
   .service-accordion-details>a { font-size:18px; }
-  .project-process { margin-top:36px; padding-top:28px; }
-  .project-process-header { display:block; margin-bottom:28px; }
-  .project-process-header h2 { font-size:38px; }
-  .project-process-header p { margin-top:14px; font-size:16px; }
-  .project-process-timeline { grid-template-columns:1fr 1fr; }
-  .project-process-step { min-height:210px; padding:20px 14px 20px 12px; border-bottom:1px solid #ffffff24; }
-  .project-process-step:first-child { padding-left:0; }
-  .project-process-step:nth-child(2)::after { display:none; }
-  .project-process-step:nth-child(3),.project-process-step:nth-child(4) { border-bottom:0; }
-  .project-process-step:nth-child(3) { padding-left:0; }
-  .project-process-step>div>span { font-size:14px; }
-  .project-process-step h3 { font-size:21px; }
-  .project-process-step>p { font-size:14px; line-height:21px; }
+  .project-process { margin:0 -18px; padding:40px 0; }
+  .project-process-header { display:flex; flex-direction:column; align-items:flex-start; gap:12px; margin:0; padding:0 20px; }
+  .project-process-header h2 { margin:0; color:#fff; font:400 32px/1.2 var(--font-bricolage),sans-serif; letter-spacing:-.64px; white-space:nowrap; }
+  .project-process-header p { max-width:none; margin:0; color:#777980; font:400 14px/1.44 var(--font-inter),sans-serif; }
+  .project-process-timeline { display:flex; flex-direction:column; gap:0; margin-top:24px; padding:0 16px; border:0; }
+  .project-process-step { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:8px; align-items:start; min-height:152px; padding:16px; border:0; }
+  .project-process-step:first-child { padding-left:16px; }
+  .project-process-step:nth-child(2),.project-process-step:nth-child(4) { grid-template-columns:84px minmax(0,1fr); }
+  .project-process-step:nth-child(2)>div,.project-process-step:nth-child(4)>div { grid-column:2; grid-row:1; }
+  .project-process-step:nth-child(2)>p,.project-process-step:nth-child(4)>p { grid-column:2; grid-row:2; }
+  .project-process-step:nth-child(2)>div>span,.project-process-step:nth-child(4)>div>span { grid-column:1; grid-row:1; }
+  .project-process-step>div { display:contents; }
+  .project-process-step>div>span { grid-column:2; grid-row:1; justify-self:end; padding:0; color:#fff; font:500 12px/22px var(--font-inter),sans-serif; }
+  .project-process-step h3 { grid-column:1; grid-row:1; margin:0; color:#fff; font:400 18px/27px var(--font-inter),sans-serif; }
+  .project-process-step>p { grid-column:1; grid-row:2; max-width:260px; margin:24px 0 0; color:#777980; font:400 14px/1.48 var(--font-inter),sans-serif; }
+  .project-process-step:nth-child(2)>p,.project-process-step:nth-child(4)>p { margin-top:24px; }
+  .project-process-step:nth-child(2)>div>span { justify-self:start; white-space:nowrap; }
+  .project-process-step:nth-child(4)>div>span { justify-self:start; max-width:64px; white-space:normal; }
+  .project-process-step:nth-child(2) h3,.project-process-step:nth-child(4) h3 { grid-column:2; }
+  .project-process-step:nth-child(2),.project-process-step:nth-child(4) { padding-left:0; }
+  .project-process-step:nth-child(2)>p,.project-process-step:nth-child(4)>p { grid-column:2; }
+  .project-process-step:not(:last-child)::after { display:none; }
+  .project-process-step:not(:last-child)::before { position:absolute; right:0; bottom:0; left:20%; height:1px; background:linear-gradient(90deg,transparent,#ffffff8c); content:""; }
+  .project-process-step:nth-child(3) { padding-left:16px; }
+  .project-process-step:nth-child(3) { min-height:176px; }
+  .project-process-step:not(:last-child)::before { left:22%; }
+  .project-process-step:nth-child(2)::before { right:20%; left:0; background:linear-gradient(90deg,#ffffff8c,transparent); }
+  .project-process-step:nth-child(3)::before { right:0; left:22%; }
 }
 @media(prefers-reduced-motion:reduce) { .service-accordion-item,.service-accordion-details>a span { transition:none; } }
 
