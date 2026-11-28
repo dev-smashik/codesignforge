@@ -23,12 +23,12 @@ function paintCards(stage: HTMLDivElement, position: number) {
   const cards = stage.querySelectorAll<HTMLElement>("[data-portfolio-card]");
   const stageWidth = stage.clientWidth;
   const mobile = stageWidth < 760;
-  const scale = mobile ? Math.max(0.48, stageWidth / 1920) : Math.min(1, stageWidth / 1920);
+  const scale = mobile ? 160 / 600 : Math.min(1, stageWidth / 1920);
   const guide = stage.querySelector<HTMLElement>(".portfolio-arc-guide");
   if (guide) {
     guide.style.width = `${2_976 * scale}px`;
     guide.style.height = `${2_976 * scale}px`;
-    guide.style.top = `${112 * scale}px`;
+    guide.style.top = mobile ? "53.5px" : `${112 * scale}px`;
   }
 
   const frontCards = new Set(
