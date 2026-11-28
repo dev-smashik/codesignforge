@@ -687,17 +687,19 @@ export function HomePage() {
     <section className="home-hero" id="home">
       <div className="hero-glow" aria-hidden="true" /><div className="reeded-glass" aria-hidden="true">{Array.from({ length: 36 }, (_, index) => <div className="reeded-glass-pane" key={index} />)}</div>
       <div className="hero-copy">
-        <div className="hero-heading-group">
-          <div className="hero-pill"><Image src="/assets/hero/e4bce.svg" alt="" width={8} height={8} />Crafted by Humans. Accelerated by AI</div>
-          <h1>We <em>Design, Engineer</em> &amp; Scale Digital Products That Drive <em>Business Growth.</em></h1>
-        </div>
-        <div className="hero-details">
-          <p>We partner with ambitious startups, B2B SaaS companies, and enterprise teams to transform ideas into exceptional digital experiences through strategic product design, modern engineering, and AI powered solutions.</p>
-          <HeroAction />
+        <div className="hero-content">
+          <div className="hero-heading-group">
+            <div className="hero-pill"><Image src="/assets/hero/e4bce.svg" alt="" width={8} height={8} />Crafted by Humans. Accelerated by AI</div>
+            <h1>We <em>Design, Engineer</em> &amp; Scale Digital Products That Drive <em>Business Growth.</em></h1>
+          </div>
+          <div className="hero-details">
+            <p>We partner with ambitious startups, B2B SaaS companies, and enterprise teams to transform ideas into exceptional digital experiences through strategic product design, modern engineering, and AI powered solutions.</p>
+            <HeroAction />
+          </div>
         </div>
       </div>
       <ProjectGallery />
-      <div className="role-badge role-left"><Image className="role-pointer" src="/assets/hero/role-developer-pointer.svg" alt="" width={39} height={42}/><div className="role-label"><b>Lead Developer</b></div></div><div className="role-badge role-right"><Image className="role-pointer" src="/assets/hero/0acf6.svg" alt="" width={30} height={32}/><b>Lead designer</b></div>
+      <div className="role-badge role-left"><Image className="role-pointer" src="/assets/hero/mobile-role-developer.svg" alt="" width={39} height={42}/><div className="role-label"><b>Lead Developer</b></div></div><div className="role-badge role-right"><Image className="role-pointer" src="/assets/hero/mobile-role-designer.svg" alt="" width={30} height={32}/><b>Lead designer</b></div>
     </section>
 
     <section className="trusted">

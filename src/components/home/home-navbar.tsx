@@ -60,6 +60,7 @@ export function HomeNavbar() {
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
+          <Image className="nav-menu-icon" src="/assets/hero/mobile-menu.svg" alt="" width={28} height={28} />
           <span />
           <span />
         </button>
