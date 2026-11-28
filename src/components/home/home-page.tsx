@@ -868,7 +868,8 @@ export function HomePage() {
         </div>
       </div>
       <div className="footer-wordmark" aria-hidden="true">
-        <Image className="footer-wordmark-image" src="/assets/footer/footer-glass-600-2058.png" alt="" width={3840} height={432} />
+        <Image className="footer-wordmark-image footer-wordmark-desktop" src="/assets/footer/footer-glass-600-2058.png" alt="" width={3840} height={432} />
+        <Image className="footer-wordmark-image footer-wordmark-mobile" src="/assets/footer/mobile-footer-image37.png" alt="" width={2560} height={232} />
       </div>
     </footer>
     </main>

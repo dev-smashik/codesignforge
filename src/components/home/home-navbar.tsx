@@ -27,17 +27,34 @@ function TalkButton() {
 
 export function HomeNavbar() {
   const [compact, setCompact] = useState(false);
+  const [mobileHidden, setMobileHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const updateNavbar = () => setCompact(window.scrollY > 72);
+    let previousScrollY = window.scrollY;
+    const updateNavbar = () => {
+      const currentScrollY = window.scrollY;
+      const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+      setCompact(!isMobile && currentScrollY > 72);
+      if (!isMobile || currentScrollY <= 72 || menuOpen) {
+        setMobileHidden(false);
+      } else {
+        const scrollDelta = currentScrollY - previousScrollY;
+        if (scrollDelta > 1) setMobileHidden(true);
+        else if (scrollDelta < -1) setMobileHidden(false);
+      }
+
+      previousScrollY = currentScrollY;
+    };
+
     updateNavbar();
     window.addEventListener("scroll", updateNavbar, { passive: true });
     return () => window.removeEventListener("scroll", updateNavbar);
-  }, []);
+  }, [menuOpen]);
 
   return (
-    <header className="home-nav-shell">
+    <header className={`home-nav-shell${mobileHidden ? " is-hidden-mobile" : ""}`}>
       <div className={`home-nav${compact ? " is-compact" : ""}`}>
         <a className="wordmark" href="#home" aria-label="CoDesign Forge home">
           <Image src="/assets/navbar-mark.svg" alt="" width={32} height={32} />

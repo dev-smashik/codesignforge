@@ -309,6 +309,7 @@ input {
 .footer-meta a { color:inherit;text-decoration:none;transition:color .2s ease; }
 .footer-wordmark { position:absolute;z-index:1;left:50%;bottom:0;width:min(1920px,100vw);aspect-ratio:1920/216;transform:translateX(-50%);overflow:hidden;pointer-events:none; }
 .footer-wordmark-image { display:block;width:100%;height:100%;object-fit:contain; }
+.footer-wordmark-mobile { display:none; }
 @media(max-width:1200px) {
   .footer-navigation { gap:40px; }
   .footer-branding { flex:0 1 40%; }
@@ -381,7 +382,8 @@ input {
   .home-nav.is-compact { width:min(645px,calc(100% - 24px)); }
 }
 @media(max-width:760px) {
-  .home-nav-shell { top:12px; }
+  .home-nav-shell { top:12px;transition:transform .28s ease,opacity .2s ease; }
+  .home-nav-shell.is-hidden-mobile { transform:translateY(-120%);opacity:0;pointer-events:none; }
   .home-nav { width:calc(100% - 28px);height:52px;margin:0 auto;padding:2px 10px;border:1px solid #ffffff22;border-radius:12px;background:rgba(17,17,17,.62);backdrop-filter:blur(18px); }
   .home-nav { gap:8px; }
   .home-nav .wordmark { width:auto;max-width:calc(100% - 170px);font-size:18px;gap:6px; }
@@ -402,7 +404,7 @@ input {
   .home-nav.is-compact .nav-menu-toggle { width:44px;height:44px; }
   .home-nav.is-compact nav { top:calc(100% + 8px); }
 }
-@media(prefers-reduced-motion:reduce) { .home-nav,.home-nav *,.nav-talk-button::before,.nav-talk-button::after,.case-explore,.case-explore::before,.case-explore::after,.case-explore>img { transition-duration:.01ms!important;animation:none!important; } }
+@media(prefers-reduced-motion:reduce) { .home-nav-shell,.home-nav,.home-nav *,.nav-talk-button::before,.nav-talk-button::after,.case-explore,.case-explore::before,.case-explore::after,.case-explore>img { transition-duration:.01ms!important;animation:none!important; } }
 .home-nav:not(.is-compact) { background:transparent;backdrop-filter:none; }
 
 @media(max-width:1100px) { .trusted { padding-inline:40px; }.trusted-logos { justify-content:center;flex-wrap:wrap;gap:24px 42px; } }
@@ -868,17 +870,17 @@ input {
 /* Figma mobile hero frame (390 × 844): preserve the desktop components and adapt their framing. */
 @media(max-width:760px) {
   .home-nav-shell { top:0; }
-  .home-nav:not(.is-compact) { top:32px;width:calc(100% - 32px);height:48px;padding:0;border:0;border-radius:0;background:transparent;backdrop-filter:none; }
+  .home-nav:not(.is-compact) { top:16px;box-sizing:border-box;width:calc(100% - 32px);height:auto;min-height:64px;padding:16px;border:0;border-radius:12px;background:rgba(0, 0, 0, 0.860);backdrop-filter:blur(18px); }
   .home-nav .wordmark { max-width:calc(100% - 36px);font-size:18px;line-height:25.2px;letter-spacing:-.18px;gap:4px; }
   .home-nav .wordmark img { width:28px;height:28px; }
-  .home-nav:not(.is-compact) .nav-desktop-cta { display:none; }
+.home-nav:not(.is-compact) .nav-desktop-cta { display:none; }
   .home-nav:not(.is-compact) .nav-menu-toggle { width:28px;height:28px;border:0;border-radius:0;background:transparent; }
   .home-nav:not(.is-compact) .nav-menu-toggle span { display:none; }
   .home-nav:not(.is-compact) .nav-menu-icon { display:block;width:28px;height:28px; }
   .home-nav:not(.is-compact) nav { top:calc(100% + 8px); }
 
   .home-hero { height:844px;min-height:844px;overflow:hidden; }
-  .home-hero .hero-glow { top:-440px;left:50%;width:980px;height:1380px;background-size:1208px 1536px;background-position:center; }
+.home-hero .hero-glow { top:-440px;left:50%;width:980px;height:1380px;background-size:1208px 1536px;background-position:center; }
   .home-hero .reeded-glass { height:740px;display:grid;grid-template-columns:repeat(15,minmax(0,1fr)); }
   .home-hero .reeded-glass-pane { width:auto;min-width:0; }
   .home-hero .reeded-glass-pane:nth-child(n+16) { display:none; }
@@ -931,4 +933,37 @@ input {
   .contact-form .contact-booking { align-items:center; }
   .contact-booking>span { font-size:14px;line-height:25.2px; }
   .contact-booking>strong { font-size:20px;line-height:30px;text-align:center; }
+}
+
+/* Mobile footer layout from Figma node 679:3305; desktop footer remains unchanged. */
+@media(max-width:600px) {
+  .home-footer.figma-footer { display:flex;min-height:876px;flex-direction:column; }
+  .footer-inner { width:100%;min-height:0;flex:1 0 auto;margin:0;padding:56px 16px 0; }
+  .footer-information { gap:24px; }
+  .footer-navigation { display:flex;flex-direction:column;gap:32px;padding-bottom:24px; }
+  .footer-branding { display:contents; }
+  .footer-company { order:1;width:100%;gap:24px; }
+  .footer-logo { gap:11.294px;font-size:33.882px;line-height:47.44px;letter-spacing:-1.6941px; }
+  .footer-logo img { width:45.176px;height:45.176px; }
+  .footer-company p { width:100%;font-size:14px;line-height:20px; }
+  .footer-links { order:2;width:100%;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px 0; }
+  .footer-link-group { gap:16px; }
+  .footer-links>.footer-link-group:first-child { flex:0 0 80px; }
+  .footer-links>.footer-link-group:nth-child(2) { flex:0 1 auto; }
+  .footer-link-group h2 { font-size:18px;line-height:32px; }
+  .footer-link-group>div { gap:16px; }
+  .footer-link-group a { font-size:14px;line-height:20px; }
+  .footer-link-group:last-child { width:100%; }
+  .footer-link-group:last-child>div { flex-direction:column;flex-wrap:nowrap;column-gap:0;row-gap:16px; }
+  .footer-social-block { order:3;gap:16px; }
+  .footer-social-block h2 { font-size:14px;line-height:20px; }
+  .figma-footer .footer-social { gap:12px; }
+  .figma-footer .footer-social a { flex:none;width:48px;height:48px; }
+  .footer-meta { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:16px 0;font-size:14px;line-height:20px; }
+  .footer-meta>a:first-child { grid-column:1;grid-row:1; }
+  .footer-meta>span { grid-column:1 / -1;grid-row:2;text-align:center; }
+  .footer-meta>a:last-child { grid-column:2;grid-row:1;text-align:right; }
+  .footer-wordmark { position:relative;left:auto;bottom:auto;width:358px;max-width:100%;height:32px;aspect-ratio:auto;flex:none;margin:32px auto 40px;transform:none; }
+  .footer-wordmark-desktop { display:none; }
+  .footer-wordmark-mobile { display:block;width:100%;height:100%;object-fit:cover;object-position:center; }
 }
