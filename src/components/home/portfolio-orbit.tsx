@@ -23,12 +23,12 @@ function paintCards(stage: HTMLDivElement, position: number) {
   const cards = stage.querySelectorAll<HTMLElement>("[data-portfolio-card]");
   const stageWidth = stage.clientWidth;
   const mobile = stageWidth < 760;
-  const scale = mobile ? 160 / 600 : Math.min(1, stageWidth / 1920);
+  const scale = mobile ? 128 / 600 : Math.min(1, stageWidth / 1920);
   const guide = stage.querySelector<HTMLElement>(".portfolio-arc-guide");
   if (guide) {
-    guide.style.width = `${2_976 * scale}px`;
-    guide.style.height = `${2_976 * scale}px`;
-    guide.style.top = mobile ? "53.5px" : `${112 * scale}px`;
+    guide.style.width = mobile ? "604.5px" : `${2_976 * scale}px`;
+    guide.style.height = mobile ? "604.5px" : `${2_976 * scale}px`;
+    guide.style.top = mobile ? "61.75px" : `${112 * scale}px`;
   }
 
   const frontCards = new Set(
@@ -50,15 +50,18 @@ function paintCards(stage: HTMLDivElement, position: number) {
 
     const absoluteDistance = Math.abs(distance);
     const orbitAngle = distance * orbitStep;
-    // Keep back-row cards upright and give the two visible rear cards the same
-    // outward 30° lean as their matching cards on the front sides.
-    const cardAngle = Math.abs(distance) === 3 ? Math.sign(distance) * cardTiltStep : distance * cardTiltStep;
+    // Keep back-row cards upright and give the visible side cards the same
+    // outward lean as their matching cards on the front sides.
+    const tiltStep = mobile ? (20 * Math.PI) / 180 : cardTiltStep;
+    const cardAngle = Math.abs(distance) === 3 ? Math.sign(distance) * tiltStep : distance * tiltStep;
     const cardScale = absoluteDistance <= 1 ? 1 : Math.max(0.58, 1 - (absoluteDistance - 1) * 0.1);
     const isFrontCard = frontCards.has(index);
     const width = 600 * scale;
     const height = 800 * scale;
-    const centerX = stageWidth / 2 + orbitRadiusX * scale * Math.sin(orbitAngle);
-    const centerY = (400 + orbitRadiusY * (1 - Math.cos(orbitAngle))) * scale;
+    const horizontalOrbitRadius = mobile ? 1_100 : orbitRadiusX;
+    const centerX = stageWidth / 2 + (mobile ? 3 : 0) + horizontalOrbitRadius * scale * Math.sin(orbitAngle);
+    const mobileTopOffset = 6.2 + 12.39 * Math.max(0, 1 - absoluteDistance);
+    const centerY = (400 + orbitRadiusY * (1 - Math.cos(orbitAngle))) * scale + (mobile ? mobileTopOffset : 0);
     const cardCenterX = ((width / 2) * Math.cos(cardAngle) - (height / 2) * Math.sin(cardAngle)) * cardScale;
     const cardCenterY = ((width / 2) * Math.sin(cardAngle) + (height / 2) * Math.cos(cardAngle)) * cardScale;
     const left = centerX - cardCenterX;
