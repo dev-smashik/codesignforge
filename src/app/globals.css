@@ -219,7 +219,7 @@ input {
 .home-page a.forge-button { color:#fff; }
 .home-page a.forge-button-light { color:#0b0b0b; }
 .role-badge { padding:10px 12px; }
-.role-pointer { position:absolute;top:-30px;width:30px;height:32px; }
+.role-pointer { position:absolute;top:-30px;width:30px;height:32px;  }
 .role-left .role-pointer { right:-9px; transform:scaleX(-1); }
 .role-right .role-pointer { left:-12px; transform:scaleX(1); }
 .service-list .accordion-row>button { font-size:40px;line-height:1.2; }
@@ -254,7 +254,7 @@ input {
 .role-right .role-pointer { top:-32px;left:-23px;transform:scaleX(1); }
 .home-hero { height:1108px; }
 .home-hero .role-left { top:467px;left:clamp(24px,18.75vw,360px);width:176px;height:64px;padding:0;background:transparent;box-shadow:none;animation:rolebadge-float 1.8s ease-in-out infinite; }
-.home-hero .role-left .role-pointer { top:0;left:152px;right:auto;width:39px;height:42px;transform:none; }
+.home-hero .role-left .role-pointer { top:0;left:152px;right:auto;width:39px;height:42px;transform:scale(-1,1);}
 .home-hero .role-left .role-label { position:absolute;top:30px;left:0;display:inline-flex;height:36px;align-items:center;justify-content:center;padding:4px 12px;border-radius:8px;background:#b4f4b4;color:#0b0b0b;box-shadow:0 2px 2.5px rgba(0,0,0,.19); }
 .home-hero .role-left .role-label b { font:400 20px/32px var(--font-inter-tight),sans-serif; }
 @keyframes rolebadge-float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
