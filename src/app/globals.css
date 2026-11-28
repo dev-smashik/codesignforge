@@ -904,3 +904,31 @@ input {
   .home-hero .role-right .role-pointer { position:absolute;top:-1.5px;left:-2.4px;right:auto;width:16.6243px;height:17.7577px;transform:scaleX(1); }
   .home-hero .role-right b { position:absolute;top:10.48px;left:7px;display:flex;height:22.522px;align-items:center;padding:3px 8px;border-radius:4.87px;background:#dc532c;color:#fff;letter-spacing:-.2px;box-shadow:0 1.217px .761px rgba(0,0,0,.19); }
 }
+
+/* Contact form mobile framing from Figma node 663:2281. Desktop rules stay intact. */
+@media(max-width:760px) {
+  .contact-section { padding:56px 16px; }
+  .contact-grid { width:100%;display:flex;flex-direction:column;gap:32px; }
+  .contact-copy { min-height:0;gap:24px; }
+  .contact-intro h2 { max-width:none;margin:0 0 16px;font-size:32px;line-height:1.2;letter-spacing:-.64px; }
+  .contact-intro p { max-width:none;font-size:14px;line-height:1.44; }
+  .contact-details { width:100%;flex-direction:column;gap:12px; }
+  .contact-details>button { flex:none;width:100%;height:48px;box-sizing:border-box;background:#121212; }
+  .contact-email-icon { background:#dc532c; }
+  .contact-details>button>img { opacity:1; }
+  .contact-form { width:100%;height:auto;margin:0;gap:24px; }
+  .contact-form-fields { gap:12px; }
+  .contact-form label,.contact-form legend { font-size:16px;line-height:1.44; }
+  .contact-form label { gap:12px; }
+  .contact-form .form-pair { grid-template-columns:minmax(0,1fr);gap:24px; }
+  .contact-form input,.contact-form textarea { background:#121212; }
+  .contact-form textarea { height:120px;min-height:120px; }
+  .contact-form .pills button { padding:8px 16px;border-color:rgba(220,83,44,.2);font-size:14px;line-height:22px; }
+  .contact-form .form-bottom { width:100%;align-items:center;flex-direction:column;gap:32px; }
+  .contact-form .signal-submit-frame,.contact-form .sgb-row,.contact-form .sgb-slot--cta,.contact-form .signal-submit-button { width:100%; }
+  .contact-form .sgb-slot--cta { min-width:0;flex:1; }
+  .contact-form .signal-submit-button { box-sizing:border-box;min-width:0; }
+  .contact-form .contact-booking { align-items:center; }
+  .contact-booking>span { font-size:14px;line-height:25.2px; }
+  .contact-booking>strong { font-size:20px;line-height:30px;text-align:center; }
+}
