@@ -675,12 +675,59 @@ function ContactForm() {
 
 export function HomePage() {
   const [copyStatus, setCopyStatus] = useState("");
+  const trustedLogoTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = trustedLogoTrackRef.current;
+    const viewport = track?.parentElement;
+    if (!track || !viewport) return;
+
+    let frame = 0;
+    const updateLogoVisibility = () => {
+      const clip = viewport.getBoundingClientRect();
+      track.querySelectorAll<HTMLElement>(".trusted-logo-set > *").forEach((logo) => {
+        const bounds = logo.getBoundingClientRect();
+        const visible = Math.max(0, Math.min(bounds.right, clip.right) - Math.max(bounds.left, clip.left));
+        const ratio = bounds.width ? Math.min(1, visible / bounds.width) : 0;
+        logo.style.opacity = ratio >= 0.995 ? "1" : String(ratio);
+      });
+      frame = window.requestAnimationFrame(updateLogoVisibility);
+    };
+
+    const mobile = window.matchMedia("(max-width: 760px)");
+    const start = () => {
+      window.cancelAnimationFrame(frame);
+      if (mobile.matches) frame = window.requestAnimationFrame(updateLogoVisibility);
+      else track.querySelectorAll<HTMLElement>(".trusted-logo-set > *").forEach((logo) => (logo.style.opacity = ""));
+    };
+
+    start();
+    mobile.addEventListener("change", start);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      mobile.removeEventListener("change", start);
+    };
+  }, []);
 
   const copyContact = async (value: string) => {
     await navigator.clipboard?.writeText(value);
     setCopyStatus(value);
     window.setTimeout(() => setCopyStatus(""), 1800);
   };
+  const partnerLogoSet = (duplicate = false) => <div className="trusted-logo-set" aria-hidden={duplicate || undefined}>
+    <Image src="/assets/trusted/a1a6d.png" alt="Screen Skinz" width={176} height={40} />
+    <div className="partner-logo"><Image src="/assets/trusted/07dbc.svg" alt="" width={40} height={40} /><b>siteassist</b></div>
+    <div className="partner-logo partner-logo-aarsis">
+      <span className="aarsis-symbol" aria-hidden="true">
+        <Image src="/assets/trusted/729dd.svg" alt="" width={37.362} height={39.98} />
+        <svg width="26" height="25" viewBox="0 0 26 25" fill="none" aria-hidden="true"><path d="M25.166 24.556H18.68V10.612C18.68 6.666 15.305 3.455 11.156 3.455C7.00701 3.455 3.632 6.666 3.632 10.612H0C0 4.76 5.00501 0 11.157 0C17.309 0 22.313 4.761 22.313 10.612V21.101H25.167V24.556ZM14.269 13.943C14.269 15.579 12.875 16.904 11.156 16.904C9.43701 16.904 8.04301 15.578 8.04301 13.943C8.04301 12.308 9.43701 10.982 11.156 10.982C12.875 10.982 14.269 12.308 14.269 13.943Z" fill="#0B0B0B" /></svg>
+      </span>
+      <b>aarsis</b>
+    </div>
+    <b className="partner-name">Khantrast</b>
+    <Image src="/assets/trusted/ba915.png" alt="Elutropia" width={176} height={40} />
+    <div className="partner-logo partner-logo-spawndrop"><Image src="/assets/trusted/dd033.svg" alt="" width={35.4317} height={38.3502} /><Image src="/assets/trusted/4c096.svg" alt="spawndrop" width={186.608} height={32.6186} /></div>
+  </div>;
   return <>
     <HomeNavbar />
     <main className="home-page">
@@ -705,19 +752,22 @@ export function HomePage() {
     <section className="trusted">
       <div className="trusted-container">
         <p>These companies trust us</p>
-        <div className="trusted-logos">
+        <div className="trusted-logos trusted-logos-desktop" aria-label="Trusted companies">
           <Image src="/assets/trusted/a1a6d.png" alt="Screen Skinz" width={176} height={40} />
           <div className="partner-logo"><Image src="/assets/trusted/07dbc.svg" alt="" width={40} height={40} /><b>siteassist</b></div>
           <div className="partner-logo partner-logo-aarsis">
             <span className="aarsis-symbol" aria-hidden="true">
               <Image src="/assets/trusted/729dd.svg" alt="" width={37.362} height={39.98} />
-              <svg width="26" height="25" viewBox="0 0 26 25" fill="none"><path d="M25.166 24.556H18.68V10.612C18.68 6.666 15.305 3.455 11.156 3.455C7.00701 3.455 3.632 6.666 3.632 10.612H0C0 4.76 5.00501 0 11.157 0C17.309 0 22.313 4.761 22.313 10.612V21.101H25.167V24.556ZM14.269 13.943C14.269 15.579 12.875 16.904 11.156 16.904C9.43701 16.904 8.04301 15.578 8.04301 13.943C8.04301 12.308 9.43701 10.982 11.156 10.982C12.875 10.982 14.269 12.308 14.269 13.943Z" fill="#0B0B0B" /></svg>
+              <svg width="26" height="25" viewBox="0 0 26 25" fill="none" aria-hidden="true"><path d="M25.166 24.556H18.68V10.612C18.68 6.666 15.305 3.455 11.156 3.455C7.00701 3.455 3.632 6.666 3.632 10.612H0C0 4.76 5.00501 0 11.157 0C17.309 0 22.313 4.761 22.313 10.612V21.101H25.167V24.556ZM14.269 13.943C14.269 15.579 12.875 16.904 11.156 16.904C9.43701 16.904 8.043 15.578 8.043 13.943C8.043 12.308 9.437 10.982 11.156 10.982C12.875 10.982 14.269 12.308 14.269 13.943Z" fill="#0B0B0B" /></svg>
             </span>
             <b>aarsis</b>
           </div>
           <b className="partner-name">Khantrast</b>
           <Image src="/assets/trusted/ba915.png" alt="Elutropia" width={176} height={40} />
           <div className="partner-logo partner-logo-spawndrop"><Image src="/assets/trusted/dd033.svg" alt="" width={35.4317} height={38.3502} /><Image src="/assets/trusted/4c096.svg" alt="spawndrop" width={186.608} height={32.6186} /></div>
+        </div>
+        <div className="trusted-logos trusted-logos-mobile" aria-label="Trusted companies">
+          <div className="trusted-logo-track" ref={trustedLogoTrackRef}>{partnerLogoSet()} {partnerLogoSet(true)}</div>
         </div>
       </div>
     </section>

@@ -168,14 +168,15 @@ input {
 .trusted-container { display:flex;width:min(1280px,100%);max-width:1300px;margin:0 auto;flex-direction:column;align-items:center;gap:24px; }
 .trusted-container>p { margin:0;font:500 16px/24px var(--font-inter-tight),sans-serif; }
 .trusted-logos { display:flex;width:100%;min-height:0;margin:0;padding:20px 0;align-items:center;justify-content:space-between;gap:16px;color:#0b0b0b; }
-.trusted-logos>img { display:block;flex:none;width:auto;max-width:none;height:40px;object-fit:contain; }
-.trusted-logos>.partner-logo { display:flex;flex:none;align-items:center;gap:8px; }
-.trusted-logos>.partner-logo img { display:block;flex:none;width:auto;height:auto;max-width:none;object-fit:contain; }
+.trusted-logos-mobile { display:none; }
+.trusted-logos-desktop>img { display:block;flex:none;width:auto;max-width:none;height:40px;object-fit:contain; }
+.trusted-logos-desktop>.partner-logo { display:flex;flex:none;align-items:center;gap:8px; }
+.trusted-logos-desktop>.partner-logo img { display:block;flex:none;width:auto;height:auto;max-width:none;object-fit:contain; }
 .aarsis-symbol { position:relative;display:block;flex:none;width:37.362px;height:39.98px; }
 .aarsis-symbol>img { position:absolute;left:0;top:0; }
 .aarsis-symbol>svg { position:absolute;left:5.68px;top:7.49px; }
-.trusted-logos>.partner-logo-spawndrop { gap:2px; }
-.trusted-logos>.partner-logo b,.trusted-logos>.partner-name { color:#0b0b0b;font:500 30px/40px var(--font-inter-tight),sans-serif;white-space:nowrap; }
+.trusted-logos-desktop>.partner-logo-spawndrop { gap:2px; }
+.trusted-logos-desktop>.partner-logo b,.trusted-logos-desktop>.partner-name { color:#0b0b0b;font:500 30px/40px var(--font-inter-tight),sans-serif;white-space:nowrap; }
 .portfolio { background:#f8fafc; }
 .portfolio-stage { height:764px;margin-top:100px; }
 .orbit { width:1740px;height:480px;top:225px;border:14px dashed #e9e9e9;border-bottom:0;background:transparent; }
@@ -405,11 +406,31 @@ input {
 
 @media(max-width:1100px) { .trusted { padding-inline:40px; }.trusted-logos { justify-content:center;flex-wrap:wrap;gap:24px 42px; } }
 @media(max-width:760px) {
-  .trusted { padding:100px 18px; }
+  .trusted { padding:40px 16px;border-bottom:1px solid #e5e5e5; }
   .trusted-container { gap:16px; }
-  .trusted-logos { justify-content:center;flex-wrap:wrap;gap:16px 24px;padding-block:16px; }
-  .trusted-logos>img { height:32px; }
-  .trusted-logos>.partner-logo b,.trusted-logos>.partner-name { font-size:22px;line-height:32px; }
+  .trusted-container>p { font:500 16px/24px var(--font-inter-tight),sans-serif; }
+  .trusted-logos-desktop { display:none; }
+  .trusted-logos-mobile { display:block;width:100%;height:48px;padding:8px 0;overflow:hidden; }
+  .trusted-logo-track { display:flex;width:max-content;height:100%;align-items:center;animation:trusted-logos-right 30s linear infinite;will-change:transform; }
+  .trusted-logo-set,.trusted-logo-set[aria-hidden="true"] { display:flex;flex:none;width:max-content;align-items:center;gap:20px;padding-right:20px; }
+  .trusted-logo-set>* { transition:opacity .12s linear; }
+  .trusted-logo-set .partner-logo { display:flex;flex:none;flex-direction:row;align-items:center;gap:6px;white-space:nowrap; }
+  .trusted-logo-set .partner-logo img { display:block;flex:none; }
+  .trusted-logo-set .partner-logo-spawndrop { gap:2px; }
+  .trusted-logo-set>img:first-child { width:130.723px;height:32px; }
+  .trusted-logo-set>img[alt="Elutropia"] { width:139.084px;height:31.857px; }
+  .trusted-logo-set>.partner-logo:not(.partner-logo-aarsis):not(.partner-logo-spawndrop)>img { width:30.401px;height:30.401px; }
+  .trusted-logo-set .partner-logo b,.trusted-logo-set>.partner-name { font-size:24.321px;line-height:31.617px; }
+  .trusted-logo-set .aarsis-symbol { width:28.396px;height:30.386px; }
+  .trusted-logo-set .aarsis-symbol>img { width:100%;height:100%; }
+  .trusted-logo-set .aarsis-symbol>svg { left:4.32px;top:5.69px;width:19.76px;height:19px; }
+  .trusted-logo-set>.partner-logo-spawndrop img:first-child { width:29.5px;height:31.9px; }
+  .trusted-logo-set>.partner-logo-spawndrop img:last-child { width:144.5px;height:25.25px; }
+  @keyframes trusted-logos-right { from { transform:translateX(calc(-50% + 20vw)); } to { transform:translateX(20vw); } }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .trusted-logos-mobile .trusted-logo-track { animation:none!important;transform:translateX(calc(-50% + 20vw)); }
 }
 
 /* Eight-card portfolio arc from the approved Figma composition. */
